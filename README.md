@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎓 Tutorcito - Quiz Inteligente con IA
 
-## Getting Started
+Aplicación web interactiva que genera quizzes automáticamente desde PDFs usando inteligencia artificial, con una interfaz divertida estilo Kahoot.
 
-First, run the development server:
+## ✨ Características
 
+- 📄 **Análisis de PDF con IA**: Sube un PDF y Grok generará 60 preguntas automáticamente
+- 🎯 **Tres niveles de dificultad**: Fácil, Media y Difícil
+- 🎮 **Interfaz estilo Kahoot**: Botones coloridos y animaciones divertidas
+- 🔀 **Preguntas aleatorizadas**: Cada intento usa diferentes preguntas
+- 📊 **Resultados detallados**: Revisa tus respuestas y aprende de tus errores
+- 🎉 **Efectos visuales**: Confetti, animaciones suaves y efectos de sonido
+- 💾 **Persistencia local**: Tus quizzes y resultados se guardan en el navegador
+- 🌙 **Dark mode**: Soporte para tema oscuro
+
+## 🚀 Inicio Rápido
+
+### Prerrequisitos
+
+- Node.js 18+ 
+- npm o yarn
+- Una API key de [OpenRouter](https://openrouter.ai/)
+
+### Instalación
+
+1. Instala las dependencias:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Configura las variables de entorno:
+```bash
+cp .env.local.example .env.local
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Edita `.env.local` y agrega tu API key de OpenRouter:
+```env
+OPENROUTER_API_KEY=tu_api_key_aqui
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Inicia el servidor de desarrollo:
+```bash
+npm run dev
+```
 
-## Learn More
+4. Abre [http://localhost:3000](http://localhost:3000) en tu navegador
 
-To learn more about Next.js, take a look at the following resources:
+## 📖 Cómo Usar
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Sube un PDF**: Arrastra o selecciona un archivo PDF con el contenido que quieres estudiar
+2. **Configura el quiz**: Elige cuántas preguntas quieres responder (de 3 a 60)
+3. **Genera el quiz**: La IA analizará el PDF y creará 60 preguntas automáticamente
+4. **Responde las preguntas**: Selecciona tus respuestas en la interfaz estilo Kahoot
+5. **Revisa tus resultados**: Ve tu puntuación y revisa las respuestas correctas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠️ Stack Tecnológico
+
+- **Framework**: Next.js 16 (App Router)
+- **Lenguaje**: TypeScript
+- **Estilos**: Tailwind CSS v4
+- **Componentes UI**: ShadCN/UI
+- **State Management**: Zustand
+- **Animaciones**: Framer Motion
+- **IA**: OpenRouter (Grok)
+- **Efectos**: React Confetti, Sonidos
+
+## 📝 Scripts Disponibles
+
+- `npm run dev` - Inicia el servidor de desarrollo
+- `npm run build` - Crea una build de producción
+- `npm start` - Inicia el servidor de producción
+- `npm run lint` - Ejecuta el linter
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+---
+
+Hecho con ❤️ usando Next.js y IA
