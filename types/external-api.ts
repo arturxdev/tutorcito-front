@@ -10,7 +10,7 @@ export interface ExternalDocument {
   hash_md5: string;
   num_pages: number;
   created_at: string;
-  user_id: number;
+  user: number;
 }
 
 export type ExamStatus = 'process' | 'done' | 'fail';
@@ -22,8 +22,8 @@ export interface ExternalExam {
   status: ExamStatus;
   num_questions: number;
   created_at: string;
-  document_id: number;
-  user_id: number;
+  document: number;
+  user: number;
 }
 
 export type ExternalDifficulty = 'facil' | 'medio' | 'dificil';
@@ -39,5 +39,5 @@ export interface ExternalQuestion {
   options: ExternalQuestionOptions;
   difficulty: ExternalDifficulty;
   created_at: string;
-  exam_id: number;
+  exam: number;
 }

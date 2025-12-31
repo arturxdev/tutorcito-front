@@ -35,13 +35,13 @@ export async function getExams(): Promise<ExternalExam[]> {
 }
 
 /**
- * Filtra exámenes por document_id
+ * Filtra exámenes por document
  */
 export function getExamsByDocument(
   exams: ExternalExam[],
   documentId: number
 ): ExternalExam[] {
-  return exams.filter(exam => exam.document_id === documentId);
+  return exams.filter(exam => exam.document === documentId);
 }
 
 /**
