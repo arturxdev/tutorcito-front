@@ -12,11 +12,11 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8
  */
 export async function getDocuments(): Promise<ExternalDocument[]> {
   const response = await fetch(`${API_BASE_URL}/api/documents/`);
-  
+
   if (!response.ok) {
     throw new Error(`Error fetching documents: ${response.statusText}`);
   }
-  
+
   return response.json();
 }
 
@@ -26,11 +26,11 @@ export async function getDocuments(): Promise<ExternalDocument[]> {
  */
 export async function getExams(): Promise<ExternalExam[]> {
   const response = await fetch(`${API_BASE_URL}/api/exams/`);
-  
+
   if (!response.ok) {
     throw new Error(`Error fetching exams: ${response.statusText}`);
   }
-  
+
   return response.json();
 }
 
@@ -49,12 +49,12 @@ export function getExamsByDocument(
  * Obtiene las preguntas de un examen específico
  */
 export async function getQuestionsByExam(examId: number): Promise<ExternalQuestion[]> {
-  const response = await fetch(`${API_BASE_URL}/api/questions/?exam_id=${examId}`);
-  
+  const response = await fetch(`${API_BASE_URL}/api/questions/?exam=${examId}`);
+
   if (!response.ok) {
     throw new Error(`Error fetching questions: ${response.statusText}`);
   }
-  
+
   return response.json();
 }
 
@@ -64,11 +64,11 @@ export async function getQuestionsByExam(examId: number): Promise<ExternalQuesti
  */
 export async function getDocumentById(documentId: number): Promise<ExternalDocument> {
   const response = await fetch(`${API_BASE_URL}/api/documents/${documentId}/`);
-  
+
   if (!response.ok) {
     throw new Error(`Error fetching document: ${response.statusText}`);
   }
-  
+
   return response.json();
 }
 
@@ -78,10 +78,10 @@ export async function getDocumentById(documentId: number): Promise<ExternalDocum
  */
 export async function getExamById(examId: number): Promise<ExternalExam> {
   const response = await fetch(`${API_BASE_URL}/api/exams/${examId}`);
-  
+
   if (!response.ok) {
     throw new Error(`Error fetching exam: ${response.statusText}`);
   }
-  
+
   return response.json();
 }
