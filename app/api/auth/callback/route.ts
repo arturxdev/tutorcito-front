@@ -24,6 +24,16 @@ export async function GET(request: Request) {
 
       console.log("✅ [Auth Callback] Session created successfully");
       console.log("✅ [Auth Callback] User email:", data.user?.email);
+      
+      // Sincronizar usuario con Django backend
+      try {
+        await fetch(`${origin}/api/auth/sync`);
+        console.log("✅ [Auth Callback] User synced with Django");
+      } catch (syncError) {
+        console.error("⚠️ [Auth Callback] Django sync failed (non-blocking):", syncError);
+        // No bloqueamos el login si falla la sincronización
+      }
+
       console.log("🔄 [Auth Callback] Redirecting to:", `${origin}${next}`);
 
       // Redirect to dashboard
