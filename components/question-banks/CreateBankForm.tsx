@@ -147,7 +147,7 @@ export function CreateBankForm() {
       toast.success('¡Banco de preguntas creado exitosamente!');
       
       // Redirect to the bank page
-      router.push(`/bancos/${data.bank.id}`);
+      router.push(`/documentos/${data.bank.id}`);
     } catch (error) {
       console.error('Error creating question bank:', error);
       playSound(SOUNDS.INCORRECT);

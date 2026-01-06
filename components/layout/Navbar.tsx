@@ -6,22 +6,12 @@ import { Logo } from './Logo';
 import { UserMenu } from '@/components/auth/UserMenu';
 import { cn } from '@/lib/utils';
 
-interface NavbarProps {
-  user: {
-    email?: string;
-    user_metadata?: {
-      name?: string;
-      avatar_url?: string;
-    };
-  };
-}
-
-export function Navbar({ user }: NavbarProps) {
+export function Navbar() {
   const pathname = usePathname();
 
   const navItems = [
     { href: '/dashboard', label: 'Dashboard' },
-    { href: '/bancos', label: 'Bancos' },
+    { href: '/documentos', label: 'Bancos' },
   ];
 
   return (
@@ -51,7 +41,7 @@ export function Navbar({ user }: NavbarProps) {
             </div>
           </div>
 
-          <UserMenu user={user} />
+          <UserMenu />
         </div>
       </div>
     </nav>

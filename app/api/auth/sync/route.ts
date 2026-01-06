@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getSupabaseToken } from '@/lib/supabase/get-token';
+import { auth } from '@clerk/nextjs/server';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
 
@@ -9,7 +9,8 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8
  */
 export async function GET() {
   try {
-    const token = await getSupabaseToken();
+    const { getToken } = await auth();
+    const token = await getToken();
     
     if (!token) {
       return NextResponse.json(

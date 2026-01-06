@@ -10,19 +10,19 @@ import { Label } from '@/components/ui/label';
 import { useQuizStore } from '@/store/quizStore';
 import { toast } from 'sonner';
 import { playSound, SOUNDS } from '@/utils/sounds';
-import { getDocuments, getExams, getExamsByDocument, getQuestionsByExam } from '@/lib/api/external-api';
-import { ExternalDocument, ExternalExam } from '@/types/external-api';
-import { transformExternalQuestions } from '@/lib/utils/transform-api-data';
+import { getDocuments, getExams, getExamsByDocument, getQuestionsByExam } from '@/lib/api/django-api';
+import { DjangoDocument, DjangoExam } from '@/types/django-api';
+import { transformDjangoQuestions } from '@/lib/utils/transform-api-data';
 
 export default function Home() {
   const router = useRouter();
   const { setQuiz, setLoading, isLoading, resetQuiz } = useQuizStore();
   
   // Estado para documentos y exámenes
-  const [documents, setDocuments] = useState<ExternalDocument[]>([]);
+  const [documents, setDocuments] = useState<DjangoDocument[]>([]);
   const [selectedDocumentId, setSelectedDocumentId] = useState<number | null>(null);
-  const [allExams, setAllExams] = useState<ExternalExam[]>([]);
-  const [availableExams, setAvailableExams] = useState<ExternalExam[]>([]);
+  const [allExams, setAllExams] = useState<DjangoExam[]>([]);
+  const [availableExams, setAvailableExams] = useState<DjangoExam[]>([]);
   const [selectedExamId, setSelectedExamId] = useState<number | null>(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
 
@@ -93,7 +93,7 @@ export default function Home() {
       }
 
       // Transformar preguntas al formato interno
-      const quiz = transformExternalQuestions(questions, selectedExam, selectedDocument);
+      const quiz = transformDjangoQuestions(questions, selectedExam, selectedDocument);
       
       console.log('📦 [Home] Quiz generado:', quiz);
       console.log('📊 [Home] Total de preguntas:', quiz.questions.length);

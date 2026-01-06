@@ -1,25 +1,26 @@
-import { createClient } from '@/lib/supabase/server';
-import { getQuestionBanksByUserId } from '@/lib/db/queries/question-banks';
+import { auth, currentUser } from '@clerk/nextjs/server';
+import { getQuestionBanks } from '@/lib/api/documents-api';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Plus, BookOpen, FileQuestion, BarChart3 } from 'lucide-react';
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await currentUser();
 
   if (!user) {
     return null;
   }
 
-  const banks = await getQuestionBanksByUserId(user.id);
+  // Obtener token para llamadas autenticadas
+  const { getToken } = await auth();
+  const token = await getToken();
+
+  const banks = await getQuestionBanks(token);
   
   const totalBanks = banks.length;
   const totalQuestions = banks.reduce((sum, bank) => sum + bank.totalQuestions, 0);
 
-  const displayName = user.user_metadata?.name || user.email?.split('@')[0] || 'Usuario';
+  const displayName = user?.firstName || user?.emailAddresses[0]?.emailAddress?.split('@')[0] || 'Usuario';
 
   return (
     <div className="container max-w-7xl mx-auto px-4 py-8">
@@ -41,7 +42,7 @@ export default async function DashboardPage() {
               <BookOpen className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Bancos de Preguntas</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Documentos</p>
               <p className="text-3xl font-bold text-gray-800 dark:text-gray-100">{totalBanks}</p>
             </div>
           </div>
@@ -76,12 +77,12 @@ export default async function DashboardPage() {
       <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 mb-8">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
-            📚 Mis Bancos de Preguntas
+            📚 Mis Documentos
           </h2>
-          <Link href="/bancos/new">
+          <Link href="/documentos/new">
             <Button className="gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
               <Plus size={20} />
-              Nuevo Banco
+              Subir Documento
             </Button>
           </Link>
         </div>
@@ -92,15 +93,15 @@ export default async function DashboardPage() {
               <BookOpen className="w-8 h-8 text-gray-400" />
             </div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
-              No tienes bancos de preguntas aún
+              No tienes documentos aún
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Crea tu primer banco subiendo un PDF
+              Sube tu primer documento PDF para generar exámenes
             </p>
-            <Link href="/bancos/new">
+            <Link href="/documentos/new">
               <Button className="gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
                 <Plus size={20} />
-                Crear Primer Banco
+                Subir Primer Documento
               </Button>
             </Link>
           </div>
@@ -109,7 +110,7 @@ export default async function DashboardPage() {
             {banks.slice(0, 6).map((bank) => (
               <Link
                 key={bank.id}
-                href={`/bancos/${bank.id}`}
+                href={`/documentos/${bank.id}`}
                 className="p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-lg transition-shadow"
               >
                 <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2 truncate">
@@ -136,8 +137,8 @@ export default async function DashboardPage() {
 
         {banks.length > 6 && (
           <div className="mt-6 text-center">
-            <Link href="/bancos">
-              <Button variant="outline">Ver Todos los Bancos</Button>
+            <Link href="/documentos">
+              <Button variant="outline">Ver Todos los Documentos</Button>
             </Link>
           </div>
         )}

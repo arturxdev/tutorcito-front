@@ -100,7 +100,7 @@ export function BankCard({
 
         {/* Actions */}
         <div className="flex gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <Link href={`/bancos/${id}`} className="flex-1">
+          <Link href={`/documentos/${id}`} className="flex-1">
             <Button className="w-full gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
               <Eye size={16} />
               Ver Detalles

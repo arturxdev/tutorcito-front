@@ -1,10 +1,10 @@
 import { nanoid } from 'nanoid';
 import {
-  ExternalQuestion,
-  ExternalDifficulty,
-  ExternalExam,
-  ExternalDocument,
-} from '@/types/external-api';
+  DjangoQuestion,
+  QuestionDifficulty,
+  DjangoExam,
+  DjangoDocument,
+} from '@/types/django-api';
 import {
   Question,
   Answer,
@@ -13,16 +13,16 @@ import {
 } from '@/types/quiz';
 
 /**
- * Mapea la dificultad de la API externa al formato interno
+ * Mapea la dificultad de Django al formato interno del quiz
  */
-function mapDifficulty(externalDiff: ExternalDifficulty): Difficulty {
-  const difficultyMap: Record<ExternalDifficulty, Difficulty> = {
+function mapDifficulty(djangoDiff: QuestionDifficulty): Difficulty {
+  const difficultyMap: Record<QuestionDifficulty, Difficulty> = {
     'facil': 'easy',
     'medio': 'medium',
     'dificil': 'hard',
   };
   
-  return difficultyMap[externalDiff] || 'medium';
+  return difficultyMap[djangoDiff] || 'medium';
 }
 
 /**
@@ -99,50 +99,56 @@ function parseOptions(options: any, questionId: number): { answers: Answer[], co
 }
 
 /**
- * Transforma una pregunta de la API externa al formato interno
+ * Transforma una pregunta de Django al formato interno del quiz
  */
-function transformQuestion(externalQuestion: ExternalQuestion): Question {
+function transformQuestion(djangoQuestion: DjangoQuestion): Question {
   const { answers, correctAnswerId } = parseOptions(
-    externalQuestion.options,
-    externalQuestion.id
+    djangoQuestion.options,
+    djangoQuestion.id
   );
   
   return {
-    id: String(externalQuestion.id),
-    question: externalQuestion.question,
+    id: String(djangoQuestion.id),
+    question: djangoQuestion.question,
     answers,
-    difficulty: mapDifficulty(externalQuestion.difficulty),
+    difficulty: mapDifficulty(djangoQuestion.difficulty),
     correctAnswerId,
   };
 }
 
 /**
- * Transforma un array de preguntas externas en un GeneratedQuiz
+ * Transforma un array de preguntas de Django en un GeneratedQuiz
  */
-export function transformExternalQuestions(
-  externalQuestions: ExternalQuestion[],
-  exam: ExternalExam,
-  document: ExternalDocument
+export function transformDjangoQuestions(
+  questions: DjangoQuestion[],
+  exam: DjangoExam,
+  document: DjangoDocument
 ): GeneratedQuiz {
-  const questions: Question[] = externalQuestions.map(transformQuestion);
+  const transformedQuestions: Question[] = questions.map(transformQuestion);
   
   const quizName = `${document.name} - Páginas ${exam.page_start}-${exam.page_end}`;
   
   // Calcular la distribución de dificultades
-  const easyCount = questions.filter(q => q.difficulty === 'easy').length;
-  const mediumCount = questions.filter(q => q.difficulty === 'medium').length;
-  const hardCount = questions.filter(q => q.difficulty === 'hard').length;
+  const easyCount = transformedQuestions.filter(q => q.difficulty === 'easy').length;
+  const mediumCount = transformedQuestions.filter(q => q.difficulty === 'medium').length;
+  const hardCount = transformedQuestions.filter(q => q.difficulty === 'hard').length;
   
   return {
     id: nanoid(),
     pdfName: quizName,
-    questions,
+    questions: transformedQuestions,
     createdAt: new Date().toISOString(),
     config: {
-      totalQuestions: questions.length,
+      totalQuestions: transformedQuestions.length,
       easyCount,
       mediumCount,
       hardCount,
     },
   };
 }
+
+/**
+ * @deprecated Usar transformDjangoQuestions en su lugar
+ * Alias para compatibilidad con código legacy
+ */
+export const transformExternalQuestions = transformDjangoQuestions;
