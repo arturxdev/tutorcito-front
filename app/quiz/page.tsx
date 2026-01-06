@@ -58,16 +58,19 @@ export default function QuizPage() {
 
   const currentQuestion = currentAttempt?.questions[currentQuestionIndex];
 
-  // Shuffle answers when question changes (using useMemo to avoid effect)
-  const shuffledAnswersForCurrentQuestion = useMemo(() => {
-    if (!currentQuestion) return [];
-    return shuffleArray([...currentQuestion.answers]);
-  }, [currentQuestion?.id]);
-
-  // Update state when shuffled answers change
+  // Shuffle answers when question changes and clear feedback
   useEffect(() => {
-    setShuffledAnswers(shuffledAnswersForCurrentQuestion);
-  }, [shuffledAnswersForCurrentQuestion]);
+    if (!currentQuestion) return;
+
+    // Clear any previous feedback when question changes
+    if (feedbackState) {
+      clearFeedback();
+    }
+
+    // Shuffle answers for new question
+    const shuffled = shuffleArray([...currentQuestion.answers]);
+    setShuffledAnswers(shuffled);
+  }, [currentQuestion?.id, currentQuestionIndex]);
 
   if (!currentAttempt || !currentQuestion) {
     return (

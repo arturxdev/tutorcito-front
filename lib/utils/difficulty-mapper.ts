@@ -25,12 +25,15 @@ export function toDjangoDifficulty(difficulty: FrontendDifficulty): DjangoDiffic
  * Convierte dificultad de Django a formato frontend
  */
 export function toFrontendDifficulty(difficulty: DjangoDifficulty): FrontendDifficulty {
-  const map: Record<DjangoDifficulty, FrontendDifficulty> = {
+  const map: Record<string, FrontendDifficulty> = {
     facil: 'easy',
     medio: 'medium',
     dificil: 'hard',
+    easy: 'easy',
+    medium: 'medium',
+    hard: 'hard',
   };
-  return map[difficulty];
+  return map[difficulty] || 'medium';
 }
 
 /**

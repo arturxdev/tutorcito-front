@@ -79,7 +79,7 @@ export function mapToQuestion(djangoQuestion: DjangoQuestion): Question {
   }
 
   return {
-    id: djangoQuestion.id,
+    id: djangoQuestion.id ?? 0,
     question: djangoQuestion.question,
     difficulty: toFrontendDifficulty(djangoQuestion.difficulty),
     answers,

@@ -23,20 +23,35 @@ export interface DjangoExam {
   user: number;
   page_start: number;
   page_end: number;
-  status: ExamStatus;
+  status?: ExamStatus; // Optional for backward compatibility
+  result?: number; // From POST /api/exams/ response
   num_questions: number;
   created_at: string;
+  questions?: ExamQuestionResponse[]; // Questions included in POST /api/exams/ response
 }
 
-export type QuestionDifficulty = 'facil' | 'medio' | 'dificil';
+export type QuestionDifficulty = 'facil' | 'medio' | 'dificil' | 'easy' | 'medium' | 'hard';
 
 export interface DjangoQuestion {
-  id: number;
-  exam: number;
+  id?: number;
+  exam?: number;
   question: string;
-  options: Record<string, any>;
+  options: Record<string, any> | Array<{ text: string; isCorrect: boolean }>;
   difficulty: QuestionDifficulty;
-  created_at: string;
+  created_at?: string;
+}
+
+/**
+ * Tipo para las preguntas que vienen del endpoint POST /api/exams/
+ * (estructura diferente a DjangoQuestion del GET /api/questions/)
+ */
+export interface ExamQuestionResponse {
+  question: string;
+  options: Array<{
+    text: string;
+    isCorrect: boolean;
+  }>;
+  difficulty: 'easy' | 'medium' | 'hard';
 }
 
 /**
