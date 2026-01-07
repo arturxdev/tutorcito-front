@@ -1,32 +1,33 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Home, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
-import Confetti from 'react-confetti';
-import { useWindowSize } from 'react-use';
-import { useQuizStore } from '@/store/quizStore';
-import { Logo } from '@/components/layout/Logo';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { calculateScore, getMotivationalMessage } from '@/utils/scoring';
-import { playSound, SOUNDS } from '@/utils/sounds';
-import { toast } from 'sonner';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { Home, RefreshCw, ChevronDown, ChevronUp } from "lucide-react";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
+import { useQuizStore } from "@/store/quizStore";
+import { Logo } from "@/components/layout/Logo";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { calculateScore, getMotivationalMessage } from "@/utils/scoring";
+import { playSound, SOUNDS } from "@/utils/sounds";
 
 export default function ResultsPage() {
   const router = useRouter();
   const { width, height } = useWindowSize();
-  const { currentAttempt, currentQuiz, startAttempt, resetQuiz } = useQuizStore();
+  const { currentAttempt, currentQuiz, startAttempt, resetQuiz } =
+    useQuizStore();
   const [showConfetti, setShowConfetti] = useState(true);
-  const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(new Set());
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(
+    new Set()
+  );
 
   useEffect(() => {
     if (!currentAttempt || !currentAttempt.completedAt) {
-      toast.error('No hay resultados disponibles');
-      router.push('/');
+      router.push("/dashboard");
       return;
     }
 
@@ -42,7 +43,10 @@ export default function ResultsPage() {
     return null;
   }
 
-  const scoreData = calculateScore(currentAttempt.questions, currentAttempt.answers);
+  const scoreData = calculateScore(
+    currentAttempt.questions,
+    currentAttempt.answers
+  );
   const motivationalMessage = getMotivationalMessage(scoreData.percentage);
 
   const toggleQuestion = (questionId: string) => {
@@ -59,14 +63,14 @@ export default function ResultsPage() {
     if (currentQuiz) {
       playSound(SOUNDS.CLICK);
       startAttempt(currentQuiz.config);
-      router.push('/quiz');
+      router.push("/quiz");
     }
   };
 
   const handleGoHome = () => {
     playSound(SOUNDS.CLICK);
     resetQuiz();
-    router.push('/');
+    router.push("/dashboard");
   };
 
   return (
@@ -78,7 +82,7 @@ export default function ResultsPage() {
           height={height}
           recycle={false}
           numberOfPieces={scoreData.percentage >= 90 ? 500 : 300}
-          colors={['#8B5CF6', '#3B82F6', '#EC4899', '#10B981', '#F59E0B']}
+          colors={["#8B5CF6", "#3B82F6", "#EC4899", "#10B981", "#F59E0B"]}
         />
       )}
 
@@ -86,7 +90,12 @@ export default function ResultsPage() {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <Logo size="sm" />
-          <Button variant="outline" size="sm" onClick={handleGoHome} className="gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleGoHome}
+            className="gap-2"
+          >
             <Home size={16} />
             Inicio
           </Button>
@@ -96,7 +105,7 @@ export default function ResultsPage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20 }}
         >
           <Card className="p-8 md:p-12 mb-8 bg-white dark:bg-gray-800 shadow-2xl">
             <motion.div
@@ -117,7 +126,7 @@ export default function ResultsPage() {
               className="flex flex-col items-center justify-center mb-8"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
             >
               <div className="relative w-48 h-48 mb-4">
                 <svg className="w-full h-full transform -rotate-90">
@@ -138,14 +147,22 @@ export default function ResultsPage() {
                     strokeWidth="12"
                     fill="none"
                     strokeLinecap="round"
-                    initial={{ strokeDasharray: '0 552' }}
+                    initial={{ strokeDasharray: "0 552" }}
                     animate={{
-                      strokeDasharray: `${(scoreData.percentage / 100) * 552} 552`,
+                      strokeDasharray: `${
+                        (scoreData.percentage / 100) * 552
+                      } 552`,
                     }}
-                    transition={{ duration: 1.5, ease: 'easeOut' }}
+                    transition={{ duration: 1.5, ease: "easeOut" }}
                   />
                   <defs>
-                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient
+                      id="gradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="100%"
+                    >
                       <stop offset="0%" stopColor="#8B5CF6" />
                       <stop offset="100%" stopColor="#3B82F6" />
                     </linearGradient>
@@ -174,13 +191,14 @@ export default function ResultsPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              {(['easy', 'medium', 'hard'] as const).map((difficulty) => {
+              {(["easy", "medium", "hard"] as const).map((difficulty) => {
                 const data = scoreData.byDifficulty[difficulty];
-                const percentage = data.total > 0 ? (data.correct / data.total) * 100 : 0;
+                const percentage =
+                  data.total > 0 ? (data.correct / data.total) * 100 : 0;
                 const config = {
-                  easy: { label: 'Fácil', color: 'green', icon: '🌱' },
-                  medium: { label: 'Media', color: 'yellow', icon: '⚡' },
-                  hard: { label: 'Difícil', color: 'red', icon: '🔥' },
+                  easy: { label: "Fácil", color: "green", icon: "🌱" },
+                  medium: { label: "Media", color: "yellow", icon: "⚡" },
+                  hard: { label: "Difícil", color: "red", icon: "🔥" },
                 }[difficulty];
 
                 return (
@@ -192,12 +210,16 @@ export default function ResultsPage() {
                       <Badge className={`bg-${config.color}-500 text-white`}>
                         {config.icon} {config.label}
                       </Badge>
-                      <span className={`text-2xl font-bold text-${config.color}-700 dark:text-${config.color}-300`}>
+                      <span
+                        className={`text-2xl font-bold text-${config.color}-700 dark:text-${config.color}-300`}
+                      >
                         {data.correct}/{data.total}
                       </span>
                     </div>
                     <Progress value={percentage} className="h-2" />
-                    <p className={`text-xs text-${config.color}-600 dark:text-${config.color}-400 mt-2`}>
+                    <p
+                      className={`text-xs text-${config.color}-600 dark:text-${config.color}-400 mt-2`}
+                    >
                       {Math.round(percentage)}% correcto
                     </p>
                   </Card>
@@ -220,7 +242,12 @@ export default function ResultsPage() {
                 <RefreshCw size={20} />
                 Nuevo Intento
               </Button>
-              <Button size="lg" variant="outline" onClick={handleGoHome} className="gap-2">
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={handleGoHome}
+                className="gap-2"
+              >
                 <Home size={20} />
                 Volver al Inicio
               </Button>
@@ -237,12 +264,16 @@ export default function ResultsPage() {
           <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">
             Revisión de Respuestas
           </h2>
-          
+
           <div className="space-y-4">
             {currentAttempt.questions.map((question, index) => {
               const userAnswerId = currentAttempt.answers[question.id];
-              const correctAnswer = question.answers.find((a) => a.id === question.correctAnswerId);
-              const userAnswer = question.answers.find((a) => a.id === userAnswerId);
+              const correctAnswer = question.answers.find(
+                (a) => a.id === question.correctAnswerId
+              );
+              const userAnswer = question.answers.find(
+                (a) => a.id === userAnswerId
+              );
               const isCorrect = userAnswerId === question.correctAnswerId;
               const isExpanded = expandedQuestions.has(question.id);
 
@@ -251,8 +282,8 @@ export default function ResultsPage() {
                   key={question.id}
                   className={`overflow-hidden ${
                     isCorrect
-                      ? 'border-green-500 dark:border-green-600'
-                      : 'border-red-500 dark:border-red-600'
+                      ? "border-green-500 dark:border-green-600"
+                      : "border-red-500 dark:border-red-600"
                   }`}
                 >
                   <button
@@ -262,10 +293,10 @@ export default function ResultsPage() {
                     <div className="flex items-center gap-4 text-left flex-1">
                       <div
                         className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${
-                          isCorrect ? 'bg-green-500' : 'bg-red-500'
+                          isCorrect ? "bg-green-500" : "bg-red-500"
                         }`}
                       >
-                        {isCorrect ? '✓' : '✗'}
+                        {isCorrect ? "✓" : "✗"}
                       </div>
                       <div className="flex-1">
                         <p className="font-semibold text-gray-800 dark:text-gray-200">
@@ -274,28 +305,32 @@ export default function ResultsPage() {
                         <Badge
                           variant="outline"
                           className={`mt-2 ${
-                            question.difficulty === 'easy'
-                              ? 'border-green-500 text-green-700'
-                              : question.difficulty === 'medium'
-                              ? 'border-yellow-500 text-yellow-700'
-                              : 'border-red-500 text-red-700'
+                            question.difficulty === "easy"
+                              ? "border-green-500 text-green-700"
+                              : question.difficulty === "medium"
+                              ? "border-yellow-500 text-yellow-700"
+                              : "border-red-500 text-red-700"
                           }`}
                         >
-                          {question.difficulty === 'easy'
-                            ? '🌱 Fácil'
-                            : question.difficulty === 'medium'
-                            ? '⚡ Media'
-                            : '🔥 Difícil'}
+                          {question.difficulty === "easy"
+                            ? "🌱 Fácil"
+                            : question.difficulty === "medium"
+                            ? "⚡ Media"
+                            : "🔥 Difícil"}
                         </Badge>
                       </div>
                     </div>
-                    {isExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+                    {isExpanded ? (
+                      <ChevronUp size={24} />
+                    ) : (
+                      <ChevronDown size={24} />
+                    )}
                   </button>
 
                   {isExpanded && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
+                      animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       className="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50"
                     >
@@ -308,11 +343,11 @@ export default function ResultsPage() {
                             <p
                               className={`p-3 rounded-lg ${
                                 isCorrect
-                                  ? 'bg-green-100 dark:bg-green-950/30 text-green-800 dark:text-green-200 border border-green-300 dark:border-green-700'
-                                  : 'bg-red-100 dark:bg-red-950/30 text-red-800 dark:text-red-200 border border-red-300 dark:border-red-700'
+                                  ? "bg-green-100 dark:bg-green-950/30 text-green-800 dark:text-green-200 border border-green-300 dark:border-green-700"
+                                  : "bg-red-100 dark:bg-red-950/30 text-red-800 dark:text-red-200 border border-red-300 dark:border-red-700"
                               }`}
                             >
-                              {userAnswer.text} {isCorrect ? '✓' : '✗'}
+                              {userAnswer.text} {isCorrect ? "✓" : "✗"}
                             </p>
                           </div>
                         )}
