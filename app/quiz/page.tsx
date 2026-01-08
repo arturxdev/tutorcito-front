@@ -1,17 +1,15 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Home } from 'lucide-react';
+import { Home } from 'lucide-react';
 import { useQuizStore } from '@/store/quizStore';
 import { Logo } from '@/components/layout/Logo';
-import { ProgressBar } from '@/components/quiz/ProgressBar';
 import { DifficultyBadge } from '@/components/quiz/DifficultyBadge';
 import { AnswerButton } from '@/components/quiz/AnswerButton';
 import { QuestionProgressDots } from '@/components/quiz/QuestionProgressDots';
 import { Button } from '@/components/ui/button';
-import { Button3D } from '@/components/ui/button-3d';
 import { Card3D } from '@/components/ui/card-3d';
 import {
   Dialog,
@@ -38,8 +36,6 @@ export default function QuizPage() {
     selectAnswer,
     showFeedback,
     clearFeedback,
-    nextQuestion,
-    previousQuestion,
     finishAttempt,
   } = useQuizStore();
 
@@ -86,8 +82,6 @@ export default function QuizPage() {
     );
   }
 
-  const isLastQuestion = currentQuestionIndex === currentAttempt.questions.length - 1;
-  const isFirstQuestion = currentQuestionIndex === 0;
   const selectedAnswerId = selectedAnswers[currentQuestion.id];
 
   const handleAnswerSelect = (answerId: string) => {
@@ -101,25 +95,6 @@ export default function QuizPage() {
     // Reproducir sonido correspondiente
     const isCorrect = answerId === correctAnswerId;
     playSound(isCorrect ? SOUNDS.CORRECT : SOUNDS.INCORRECT);
-  };
-
-  const handleNext = () => {
-    // Clear feedback before moving to next question
-    if (feedbackState) {
-      clearFeedback();
-    }
-
-    if (isLastQuestion) {
-      setShowFinishDialog(true);
-    } else {
-      playSound(SOUNDS.NEXT, 0.3);
-      nextQuestion();
-    }
-  };
-
-  const handlePrevious = () => {
-    playSound(SOUNDS.NEXT, 0.3);
-    previousQuestion();
   };
 
   const handleFinish = () => {
@@ -217,33 +192,6 @@ export default function QuizPage() {
               total={currentAttempt.questions.length}
               answered={answeredSet}
             />
-
-            {/* Navigation */}
-            <div className="flex justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700">
-              <Button3D
-                variant="white"
-                onClick={handlePrevious}
-                disabled={isFirstQuestion}
-                className="gap-2"
-              >
-                <ChevronLeft size={20} />
-                Anterior
-              </Button3D>
-
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                {answeredQuestions} de {currentAttempt.questions.length} respondidas
-              </div>
-
-              <Button3D
-                variant="primary"
-                onClick={handleNext}
-                disabled={!selectedAnswerId}
-                className="gap-2"
-              >
-                {isLastQuestion ? 'Finalizar' : 'Siguiente'}
-                <ChevronRight size={20} />
-              </Button3D>
-            </div>
             </motion.div>
           </Card3D>
         </AnimatePresence>
