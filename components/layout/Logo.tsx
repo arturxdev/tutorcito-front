@@ -31,7 +31,7 @@ export function Logo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
         >
           <GraduationCap
             size={currentSize.icon}
-            className="text-blue-600 dark:text-blue-400"
+            className="text-[#590df2]"
             strokeWidth={2.5}
           />
         </motion.div>
@@ -48,27 +48,14 @@ export function Logo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
         >
           <Sparkles
             size={currentSize.icon * 0.4}
-            className="text-purple-500 dark:text-purple-400"
+            className="text-[#590df2]"
             fill="currentColor"
           />
         </motion.div>
       </div>
-      <motion.h1
-        className={`${currentSize.text} font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-clip-text text-transparent`}
-        animate={{
-          backgroundPosition: ['0%', '100%', '0%'],
-        }}
-        transition={{
-          duration: 5,
-          repeat: Infinity,
-          ease: 'linear',
-        }}
-        style={{
-          backgroundSize: '200% auto',
-        }}
-      >
+      <h2 className={`text-[#590df2] dark:text-white ${currentSize.text} font-black tracking-tight`}>
         Tutorcito
-      </motion.h1>
+      </h2>
     </motion.div>
   );
 }

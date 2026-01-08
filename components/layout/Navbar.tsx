@@ -15,24 +15,24 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+    <nav className="sticky top-0 z-50 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
       <div className="container max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-8">
             <Link href="/dashboard">
               <Logo size="sm" />
             </Link>
-            
+
             <div className="hidden md:flex items-center gap-6">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'text-sm font-medium transition-colors hover:text-purple-600 dark:hover:text-purple-400',
+                    'text-sm font-semibold transition-colors hover:text-[#590df2]',
                     pathname === item.href
-                      ? 'text-purple-600 dark:text-purple-400'
-                      : 'text-gray-600 dark:text-gray-400'
+                      ? 'text-[#590df2]'
+                      : 'text-gray-600 dark:text-gray-300'
                   )}
                 >
                   {item.label}
