@@ -26,7 +26,7 @@ export function ProgressBar({ current, total }: ProgressBarProps) {
           key={`percentage-${percentage}`}
           initial={{ scale: 1.2, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="text-purple-600 dark:text-purple-400"
+          className=" dark:text-white"
         >
           {Math.round(percentage)}%
         </motion.span>

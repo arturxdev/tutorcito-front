@@ -174,7 +174,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-200">
-      <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden max-w-[1440px] mx-auto">
+      <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden md:w-4/5 mx-auto">
         {/* Navbar */}
         <nav className="sticky top-0 z-50 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-x border-gray-300 dark:border-gray-800">
           <div className="px-4 md:px-8 py-4 flex items-center justify-between w-full max-w-[1280px] mx-auto">
@@ -555,7 +555,7 @@ export default function LandingPage() {
         {/* Features Section */}
         <section
           id="features"
-          className="py-16 md:py-24 bg-[#f2f2f7] dark:bg-gray-950 border-b border-x border-gray-300 dark:border-gray-800"
+          className="py-16 md:py-24 bg-gray-50 dark:bg-gray-950 border-b border-x border-gray-300 dark:border-gray-800"
         >
           <div className="max-w-[1200px] mx-auto px-4 md:px-8">
             <div className="text-center mb-16">
@@ -621,7 +621,7 @@ export default function LandingPage() {
           id="pricing"
           className="bg-white dark:bg-gray-950 border-b border-x border-gray-300 dark:border-gray-800"
         >
-          <div className="w-100 mx-auto w-full bg-[#2460FF]  overflow-hidden relative shadow-2xl">
+          <div className="w-100 mx-auto w-full bg-[#2460FF]  overflow-hidden relative">
             <div
               className="absolute top-0 right-0 w-[400px] h-[400px] blur-3xl translate-x-1/2 -translate-y-1/2"
               style={{

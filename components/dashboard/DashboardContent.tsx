@@ -46,7 +46,7 @@ export default function DashboardContent({
     "Usuario";
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 py-8">
+    <div className="container max-w-4/5 mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-2">
@@ -57,59 +57,7 @@ export default function DashboardContent({
         </p>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card3D className="p-6">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-xl">
-              <BookOpen className="w-6 h-6 text-[#590df2]" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                Documentos
-              </p>
-              <p className="text-3xl font-black text-gray-900 dark:text-white">
-                {totalBanks}
-              </p>
-            </div>
-          </div>
-        </Card3D>
-
-        <Card3D className="p-6">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
-              <FileQuestion className="w-6 h-6 text-[#1368ce]" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                Total Preguntas
-              </p>
-              <p className="text-3xl font-black text-gray-900 dark:text-white">
-                {totalQuestions}
-              </p>
-            </div>
-          </div>
-        </Card3D>
-
-        <Card3D className="p-6">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-xl">
-              <BarChart3 className="w-6 h-6 text-[#26890c]" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                Exámenes
-              </p>
-              <p className="text-3xl font-black text-gray-900 dark:text-white">
-                0
-              </p>
-            </div>
-          </div>
-        </Card3D>
-      </div>
-
-      {/* Quick Actions */}
-      <Card3D className="p-6 mb-8">
+      <div className="mb-8">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-black text-gray-900 dark:text-white">
             📚 Mis Documentos
@@ -124,7 +72,7 @@ export default function DashboardContent({
             <Button3D
               onClick={() => setShowCreateExamDialog(true)}
               disabled={documents.length === 0}
-              variant="red"
+              variant="white"
               className="gap-2"
               size="sm"
             >
@@ -134,7 +82,7 @@ export default function DashboardContent({
           </div>
         </div>
 
-        {banks.length === 0 ? (
+        {documents.length === 0 ? (
           <div className="text-center py-12">
             <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
               <BookOpen className="w-8 h-8 text-gray-400" />
@@ -154,28 +102,17 @@ export default function DashboardContent({
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {banks.slice(0, 6).map((bank) => (
-              <Link key={bank.id} href={`/documentos/${bank.id}`}>
-                <Card3D variant="interactive" className="p-4">
-                  <h3 className="font-black text-gray-900 dark:text-white mb-2 truncate">
-                    📄 {bank.name}
-                  </h3>
-                  <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 font-medium">
-                    <span>{bank.totalQuestions} preguntas</span>
-                  </div>
-                  <div className="flex gap-2 mt-2">
-                    <span className="text-xs px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded font-bold">
-                      🟢 {bank.easyCount}
-                    </span>
-                    <span className="text-xs px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded font-bold">
-                      🟡 {bank.mediumCount}
-                    </span>
-                    <span className="text-xs px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded font-bold">
-                      🔴 {bank.hardCount}
-                    </span>
-                  </div>
-                </Card3D>
-              </Link>
+            {documents.map((document) => (
+              // <Link key={document.id} href={`/documentos/${document.id}`}>
+              <Card3D variant="interactive" className="p-4">
+                <p className="font-bold text-gray-900 dark:text-white mb-2 truncate">
+                  {document.name}
+                </p>
+                <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 font-medium">
+                  <span>{document.num_pages} paginas</span>
+                </div>
+              </Card3D>
+              // </Link>
             ))}
           </div>
         )}
@@ -187,7 +124,7 @@ export default function DashboardContent({
             </Link>
           </div>
         )}
-      </Card3D>
+      </div>
 
       {/* Create Exam Dialog */}
       <CreateExamDialog

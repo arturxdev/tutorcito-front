@@ -9,7 +9,10 @@ import { Logo } from '@/components/layout/Logo';
 import { ProgressBar } from '@/components/quiz/ProgressBar';
 import { DifficultyBadge } from '@/components/quiz/DifficultyBadge';
 import { AnswerButton } from '@/components/quiz/AnswerButton';
+import { QuestionProgressDots } from '@/components/quiz/QuestionProgressDots';
 import { Button } from '@/components/ui/button';
+import { Button3D } from '@/components/ui/button-3d';
+import { Card3D } from '@/components/ui/card-3d';
 import {
   Dialog,
   DialogContent,
@@ -133,9 +136,14 @@ export default function QuizPage() {
 
   const answeredQuestions = Object.keys(selectedAnswers).length;
   const unansweredCount = currentAttempt.questions.length - answeredQuestions;
+  const answeredSet = new Set(
+    Object.keys(selectedAnswers).map((qId) =>
+      currentAttempt.questions.findIndex((q) => q.id === qId)
+    )
+  );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gray-50">
       <div className="container max-w-5xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -151,38 +159,33 @@ export default function QuizPage() {
           </Button>
         </div>
 
-        {/* Progress */}
-        <div className="mb-8">
-          <ProgressBar
-            current={currentQuestionIndex + 1}
-            total={currentAttempt.questions.length}
-          />
-        </div>
-
         {/* Question Card */}
         <AnimatePresence mode="wait">
-          <motion.div
-            key={currentQuestion.id}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 md:p-12"
-          >
-            {/* Difficulty Badge */}
-            <div className="mb-6">
-              <DifficultyBadge difficulty={currentQuestion.difficulty} />
-            </div>
-
-            {/* Question Text */}
-            <motion.h2
-              className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100 mb-8 leading-relaxed"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+          <Card3D variant="default" size="lg" className="overflow-hidden">
+            <motion.div
+              key={currentQuestion.id}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
-              {currentQuestion.question}
-            </motion.h2>
+              {/* Header: Question Counter + Difficulty Badge */}
+              <div className="flex items-center justify-between mb-6">
+                <div className="text-xs md:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Pregunta {currentQuestionIndex + 1} de {currentAttempt.questions.length}
+                </div>
+                <DifficultyBadge difficulty={currentQuestion.difficulty} />
+              </div>
+
+              {/* Question Text */}
+              <motion.h2
+                className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100 mb-8 leading-relaxed"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                {currentQuestion.question}
+              </motion.h2>
 
             {/* Answer Buttons */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
@@ -208,32 +211,41 @@ export default function QuizPage() {
               ))}
             </div>
 
+            {/* Progress Dots */}
+            <QuestionProgressDots
+              current={currentQuestionIndex + 1}
+              total={currentAttempt.questions.length}
+              answered={answeredSet}
+            />
+
             {/* Navigation */}
             <div className="flex justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700">
-              <Button
-                variant="outline"
+              <Button3D
+                variant="white"
                 onClick={handlePrevious}
                 disabled={isFirstQuestion}
                 className="gap-2"
               >
                 <ChevronLeft size={20} />
                 Anterior
-              </Button>
+              </Button3D>
 
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 {answeredQuestions} de {currentAttempt.questions.length} respondidas
               </div>
 
-              <Button
+              <Button3D
+                variant="primary"
                 onClick={handleNext}
                 disabled={!selectedAnswerId}
-                className="gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                className="gap-2"
               >
                 {isLastQuestion ? 'Finalizar' : 'Siguiente'}
                 <ChevronRight size={20} />
-              </Button>
+              </Button3D>
             </div>
-          </motion.div>
+            </motion.div>
+          </Card3D>
         </AnimatePresence>
       </div>
 

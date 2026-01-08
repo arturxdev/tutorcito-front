@@ -13,6 +13,7 @@ import { Card } from '@/components/ui/card';
 import { useQuizStore } from '@/store/quizStore';
 import { transformDjangoQuestions } from '@/lib/utils/transform-api-data';
 import type { DjangoDocument } from '@/types/django-api';
+import { Button3D } from '../ui/button-3d';
 
 interface CreateExamDialogProps {
   documents: DjangoDocument[];
@@ -211,7 +212,7 @@ export function CreateExamDialog({ documents, open, onOpenChange }: CreateExamDi
                   value={selectedDocumentId || ''}
                   onChange={(e) => setSelectedDocumentId(e.target.value ? parseInt(e.target.value) : null)}
                   disabled={isLoading}
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:border-transparent"
                 >
                   <option value="">-- Selecciona un documento --</option>
                   {documents.map((doc) => (
@@ -299,19 +300,18 @@ export function CreateExamDialog({ documents, open, onOpenChange }: CreateExamDi
 
               {/* Actions */}
               <div className="flex gap-3 pt-4">
-                <Button
-                  type="button"
-                  variant="outline"
+                <Button3D
+                  variant="white"
                   onClick={handleClose}
                   disabled={isLoading}
                   className="flex-1"
                 >
                   Cancelar
-                </Button>
-                <Button
-                  type="submit"
+                </Button3D>
+                <Button3D
+                  variant="green"
                   disabled={isLoading || !selectedDocumentId}
-                  className="flex-1 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700"
+                  className="flex-1"
                 >
                   {isLoading ? (
                     <>
@@ -324,7 +324,7 @@ export function CreateExamDialog({ documents, open, onOpenChange }: CreateExamDi
                       Crear
                     </>
                   )}
-                </Button>
+                </Button3D>
               </div>
             </form>
           </Card>

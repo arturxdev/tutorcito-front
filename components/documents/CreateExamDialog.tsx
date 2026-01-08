@@ -10,6 +10,7 @@ import { Card } from '@/components/ui/card';
 import { createExam } from '@/lib/api/django-api';
 import { toast } from 'sonner';
 import type { DjangoDocument } from '@/types/django-api';
+import { Button3D } from '../ui/button-3d';
 
 interface CreateExamDialogProps {
   document: DjangoDocument;
@@ -32,7 +33,7 @@ export function CreateExamDialog({
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
-    
+
     const start = parseInt(pageStart);
     const end = parseInt(pageEnd);
     const questions = parseInt(numQuestions);
@@ -56,7 +57,7 @@ export function CreateExamDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
@@ -72,7 +73,7 @@ export function CreateExamDialog({
       console.log('✅ Examen creado:', newExam);
 
       toast.success('Examen creado exitosamente', {
-        description: newExam.status === 'process' 
+        description: newExam.status === 'process'
           ? 'Se están generando las preguntas. Esto puede tomar varios minutos...'
           : 'El examen está listo para usar',
       });
@@ -188,7 +189,7 @@ export function CreateExamDialog({
               </div>
 
               <div className="flex gap-3 pt-4">
-                <Button
+                <Button3D
                   type="button"
                   variant="outline"
                   onClick={handleClose}
@@ -196,11 +197,13 @@ export function CreateExamDialog({
                   className="flex-1"
                 >
                   Cancelar
-                </Button>
-                <Button
+                </Button3D>
+                <Button3D
                   type="submit"
+                  size="sm"
+                  variant="green"
                   disabled={isLoading}
-                  className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                  className="flex-1"
                 >
                   {isLoading ? (
                     <>
@@ -213,7 +216,7 @@ export function CreateExamDialog({
                       Generar Examen
                     </>
                   )}
-                </Button>
+                </Button3D>
               </div>
             </form>
           </Card>

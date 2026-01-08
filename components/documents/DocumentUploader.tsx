@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card';
 import { uploadDocument } from '@/lib/api/django-api';
 import { formatFileSize } from '@/utils/document-status';
 import { toast } from 'sonner';
+import { Button3D } from '../ui/button-3d';
 
 export function DocumentUploader() {
   const router = useRouter();
@@ -36,7 +37,7 @@ export function DocumentUploader() {
   // Manejar selección de archivo
   const handleFileSelect = useCallback((file: File) => {
     const validationError = validateFile(file);
-    
+
     if (validationError) {
       setError(validationError);
       toast.error(validationError);
@@ -91,13 +92,13 @@ export function DocumentUploader() {
 
     try {
       await uploadDocument(selectedFile);
-      
+
       toast.success('Documento subido exitosamente', {
         description: 'Procesando el PDF en segundo plano...',
       });
 
       // Redirect to list
-      router.push('/documentos');
+      router.push('/dashboard');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Error al subir el documento';
       setError(message);
@@ -112,13 +113,12 @@ export function DocumentUploader() {
       {/* Drop Zone */}
       {!selectedFile && (
         <Card
-          className={`relative border-2 border-dashed transition-all duration-300 ${
-            isDragging
-              ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-              : error
+          className={`relative border-2 border-dashed transition-all duration-300 ${isDragging
+            ? 'border-docker bg-docker dark:bg-docker/20'
+            : error
               ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-              : 'border-gray-300 dark:border-gray-700 hover:border-purple-400 dark:hover:border-purple-600'
-          }`}
+              : 'border-gray-300 dark:border-gray-700 hover:border-docker dark:hover:border-docker'
+            }`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
@@ -129,8 +129,8 @@ export function DocumentUploader() {
                 animate={isDragging ? { scale: 1.1 } : { scale: 1 }}
                 className="mb-6"
               >
-                <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-full flex items-center justify-center">
-                  <Upload className="w-10 h-10 text-purple-600 dark:text-purple-400" />
+                <div className="w-20 h-20 bg-gradient-to-br from-docker-100 to-docker-100 dark:from-docker-900/30 dark:to-docker-900/30 rounded-full flex items-center justify-center">
+                  <Upload className="w-10 h-10 text-docker-600 dark:text-docker-400" />
                 </div>
               </motion.div>
 
@@ -150,11 +150,11 @@ export function DocumentUploader() {
                 disabled={isUploading}
               />
               <label htmlFor="file-input">
-                <Button variant="outline" size="lg" asChild>
+                <Button3D variant="outline" size="lg" asChild>
                   <span className="cursor-pointer">
                     Seleccionar PDF
                   </span>
-                </Button>
+                </Button3D>
               </label>
 
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
@@ -171,10 +171,10 @@ export function DocumentUploader() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <Card className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-2 border-purple-200 dark:border-purple-800">
+          <Card className="p-6 bg-gradient-to-br from-docker-50 to-docker-50 dark:from-docker-900/20 dark:to-docker-900/20 border-2 border-docker-200 dark:border-docker-800">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-white dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                <FileText className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                <FileText className="w-6 h-6 text-docker-600 dark:text-docker-400" />
               </div>
 
               <div className="flex-1 min-w-0">
@@ -199,7 +199,7 @@ export function DocumentUploader() {
 
               {isUploading && (
                 <div className="flex-shrink-0">
-                  <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
+                  <Loader2 className="w-6 h-6 animate-spin" />
                 </div>
               )}
             </div>
@@ -207,14 +207,14 @@ export function DocumentUploader() {
             {/* Upload Button */}
             {!isUploading && (
               <div className="mt-6">
-                <Button
+                <Button3D
                   onClick={handleUpload}
-                  size="lg"
-                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                  size="sm"
+                  className="w-full"
                 >
                   <Upload className="w-5 h-5 mr-2" />
                   Subir Documento
-                </Button>
+                </Button3D>
               </div>
             )}
 
@@ -223,7 +223,7 @@ export function DocumentUploader() {
               <div className="mt-6">
                 <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
                   <div className="flex items-center gap-3">
-                    <Loader2 className="w-5 h-5 animate-spin text-purple-600" />
+                    <Loader2 className="w-5 h-5 animate-spin" />
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
                         Subiendo documento...
@@ -253,13 +253,6 @@ export function DocumentUploader() {
         </motion.div>
       )}
 
-      {/* Info Banner */}
-      <Card className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
-        <p className="text-sm text-blue-900 dark:text-blue-300">
-          <strong>💡 Nota:</strong> Una vez subido, el PDF será procesado en segundo plano
-          para extraer el texto. Podrás generar exámenes cuando el procesamiento termine.
-        </p>
-      </Card>
     </div>
   );
 }

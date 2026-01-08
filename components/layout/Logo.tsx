@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { GraduationCap, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { GraduationCap, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 
-export function Logo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
+export function Logo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
   const sizes = {
-    sm: { icon: 24, text: 'text-xl' },
-    md: { icon: 32, text: 'text-2xl' },
-    lg: { icon: 48, text: 'text-4xl' },
+    sm: { icon: 24, text: "text-xl" },
+    md: { icon: 32, text: "text-2xl" },
+    lg: { icon: 48, text: "text-4xl" },
   };
 
   const currentSize = sizes[size];
@@ -31,7 +31,7 @@ export function Logo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
         >
           <GraduationCap
             size={currentSize.icon}
-            className="text-[#590df2]"
+            className="text-docker"
             strokeWidth={2.5}
           />
         </motion.div>
@@ -48,12 +48,14 @@ export function Logo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
         >
           <Sparkles
             size={currentSize.icon * 0.4}
-            className="text-[#590df2]"
+            className="text-docker"
             fill="currentColor"
           />
         </motion.div>
       </div>
-      <h2 className={`text-[#590df2] dark:text-white ${currentSize.text} font-black tracking-tight`}>
+      <h2
+        className={`text-docker dark:text-white ${currentSize.text} font-black tracking-tight`}
+      >
         Tutorcito
       </h2>
     </motion.div>
