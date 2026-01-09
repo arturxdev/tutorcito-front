@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ApiProvider } from "@/components/providers/ApiProvider";
 import "./globals.css";
-import Script from 'next/script'
+import Script from "next/script";
 import { reverseEasing } from "framer-motion";
 
 const geistSans = Geist({
@@ -34,14 +34,22 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <ApiProvider>
-            {children}
-          </ApiProvider>
+          <ApiProvider>{children}</ApiProvider>
           <Toaster position="top-center" richColors />
           <Script
-            src="https://analytics.ahrefs.com/analytics.js"
-            data-key="QsZZw5qrAut371fAeF8dKA"
+            id="ahrefs-analytics"
             strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function() {
+                  var script = document.createElement('script');
+                  script.src = 'https://analytics.ahrefs.com/analytics.js';
+                  script.setAttribute('data-key', 'QsZZw5qrAut371fAeF8dKA');
+                  script.async = true;
+                  document.head.appendChild(script);
+                })();
+              `,
+            }}
           />
         </body>
       </html>
