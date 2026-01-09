@@ -3,13 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home } from 'lucide-react';
+import { ChevronRight, Home } from 'lucide-react';
 import { useQuizStore } from '@/store/quizStore';
 import { Logo } from '@/components/layout/Logo';
 import { DifficultyBadge } from '@/components/quiz/DifficultyBadge';
 import { AnswerButton } from '@/components/quiz/AnswerButton';
 import { QuestionProgressDots } from '@/components/quiz/QuestionProgressDots';
 import { Button } from '@/components/ui/button';
+import { Button3D } from '@/components/ui/button-3d';
 import { Card3D } from '@/components/ui/card-3d';
 import {
   Dialog,
@@ -36,6 +37,7 @@ export default function QuizPage() {
     selectAnswer,
     showFeedback,
     clearFeedback,
+    nextQuestion,
     finishAttempt,
   } = useQuizStore();
 
@@ -82,6 +84,7 @@ export default function QuizPage() {
     );
   }
 
+  const isLastQuestion = currentQuestionIndex === currentAttempt.questions.length - 1;
   const selectedAnswerId = selectedAnswers[currentQuestion.id];
 
   const handleAnswerSelect = (answerId: string) => {
@@ -95,6 +98,20 @@ export default function QuizPage() {
     // Reproducir sonido correspondiente
     const isCorrect = answerId === correctAnswerId;
     playSound(isCorrect ? SOUNDS.CORRECT : SOUNDS.INCORRECT);
+  };
+
+  const handleNext = () => {
+    // Clear feedback before moving to next question
+    if (feedbackState) {
+      clearFeedback();
+    }
+
+    if (isLastQuestion) {
+      setShowFinishDialog(true);
+    } else {
+      playSound(SOUNDS.NEXT, 0.3);
+      nextQuestion();
+    }
   };
 
   const handleFinish = () => {
@@ -192,6 +209,19 @@ export default function QuizPage() {
               total={currentAttempt.questions.length}
               answered={answeredSet}
             />
+
+            {/* Next Button */}
+            <div className="flex justify-center pt-6">
+              <Button3D
+                variant="primary"
+                onClick={handleNext}
+                disabled={!selectedAnswerId}
+                className="gap-2 min-w-[200px]"
+              >
+                {isLastQuestion ? 'Finalizar' : 'Siguiente'}
+                <ChevronRight size={20} />
+              </Button3D>
+            </div>
             </motion.div>
           </Card3D>
         </AnimatePresence>
