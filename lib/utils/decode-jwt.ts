@@ -35,7 +35,7 @@ export interface DecodedJWT {
 export function decodeJWT(token: string): DecodedJWT | null {
   try {
     const parts = token.split('.');
-    
+
     if (parts.length !== 3) {
       console.error('Invalid JWT format: expected 3 parts separated by dots');
       return null;
@@ -97,13 +97,13 @@ export function logJWTInfo(token: string): void {
   console.log('  Email:', decoded.payload.email || 'N/A');
   console.log('  Issuer (iss):', decoded.payload.iss || 'N/A');
   console.log('  Audience (aud):', decoded.payload.aud || 'N/A');
-  
+
   if (decoded.payload.exp) {
     const isExpired = Date.now() > decoded.payload.exp * 1000;
     console.log('  Expires at (exp):', decoded.payload.expFormatted);
     console.log('  Token expired:', isExpired ? '❌ YES' : '✅ NO');
   }
-  
+
   if (decoded.payload.iat) {
     console.log('  Issued at (iat):', decoded.payload.iatFormatted);
   }

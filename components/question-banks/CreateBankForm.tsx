@@ -11,7 +11,6 @@ import { CustomPromptInput } from '@/components/shared/CustomPromptInput';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { validateCustomPrompt } from '@/lib/utils/prompt-validator';
 import { playSound, SOUNDS } from '@/utils/sounds';
 
 interface QuestionBankConfig {
@@ -24,7 +23,7 @@ interface QuestionBankConfig {
 export function CreateBankForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  
+
   // Form state
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -36,15 +35,15 @@ export function CreateBankForm() {
     hardCount: 10,
   });
   const [customPrompt, setCustomPrompt] = useState('');
-  
+
   // Validation errors
   const [nameError, setNameError] = useState('');
   const [promptError, setPromptError] = useState('');
-  
+
   // Validate form
   const validateForm = (): boolean => {
     let isValid = true;
-    
+
     // Validate name
     if (!name.trim()) {
       setNameError('El nombre es obligatorio');
@@ -55,7 +54,7 @@ export function CreateBankForm() {
     } else {
       setNameError('');
     }
-    
+
     // Validate PDF
     if (!pdfFile) {
       toast.error('Por favor selecciona un archivo PDF');
@@ -64,14 +63,14 @@ export function CreateBankForm() {
       toast.error('El PDF no puede superar 10MB');
       isValid = false;
     }
-    
+
     // Warning para PDFs grandes con muchas preguntas
     if (pdfFile) {
       const pdfSizeMB = pdfFile.size / (1024 * 1024);
-      
+
       // Heurística: ~50 preguntas por MB
       const recommendedMax = Math.max(30, Math.floor(pdfSizeMB * 50));
-      
+
       if (config.totalQuestions > 80 && pdfSizeMB > 2) {
         toast.warning(
           `PDF grande (${pdfSizeMB.toFixed(1)}MB): se recomienda máximo ` +
@@ -81,45 +80,33 @@ export function CreateBankForm() {
         // No bloquear, solo advertir
       }
     }
-    
-    // Validate custom prompt
-    if (customPrompt.trim()) {
-      const validation = validateCustomPrompt(customPrompt);
-      if (!validation.isValid) {
-        setPromptError(validation.errors[0] || 'Prompt inválido');
-        isValid = false;
-      } else {
-        setPromptError('');
-      }
-    } else {
-      setPromptError('');
-    }
-    
+
+
     // Validate question distribution
     const total = config.easyCount + config.mediumCount + config.hardCount;
     if (total !== config.totalQuestions) {
       toast.error('La suma de preguntas por dificultad debe ser igual al total');
       isValid = false;
     }
-    
+
     if (config.totalQuestions < 3 || config.totalQuestions > 100) {
       toast.error('El número total de preguntas debe estar entre 3 y 100');
       isValid = false;
     }
-    
+
     return isValid;
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       playSound(SOUNDS.INCORRECT);
       return;
     }
-    
+
     setIsLoading(true);
-    
+
     try {
       // Create FormData
       const formData = new FormData();
@@ -130,22 +117,22 @@ export function CreateBankForm() {
       if (customPrompt.trim()) {
         formData.append('customPrompt', customPrompt.trim());
       }
-      
+
       // Submit to API
       const response = await fetch('/api/question-banks', {
         method: 'POST',
         body: formData,
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || 'Error al crear el banco de preguntas');
       }
-      
+
       playSound(SOUNDS.COMPLETE);
       toast.success('¡Banco de preguntas creado exitosamente!');
-      
+
       // Redirect to the bank page
       router.push(`/documentos/${data.bank.id}`);
     } catch (error) {
@@ -156,7 +143,7 @@ export function CreateBankForm() {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Bank Name */}
@@ -184,7 +171,7 @@ export function CreateBankForm() {
           {name.length}/100 caracteres
         </p>
       </motion.div>
-      
+
       {/* Description */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -212,7 +199,7 @@ export function CreateBankForm() {
           {description.length}/500 caracteres
         </p>
       </motion.div>
-      
+
       {/* PDF Upload */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -228,7 +215,7 @@ export function CreateBankForm() {
           disabled={isLoading}
         />
       </motion.div>
-      
+
       {/* Question Configuration */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -241,7 +228,7 @@ export function CreateBankForm() {
           maxQuestions={100}
         />
       </motion.div>
-      
+
       {/* Custom Prompt */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -255,7 +242,7 @@ export function CreateBankForm() {
           error={promptError}
         />
       </motion.div>
-      
+
       {/* Submit Button */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -286,7 +273,7 @@ export function CreateBankForm() {
           )}
         </Button>
       </motion.div>
-      
+
       {/* Loading Message */}
       {isLoading && (
         <motion.div
@@ -295,7 +282,7 @@ export function CreateBankForm() {
           className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800"
         >
           <p className="text-sm text-blue-900 dark:text-blue-300">
-            ⏳ Generando {config.totalQuestions} preguntas puede tomar varios minutos. 
+            ⏳ Generando {config.totalQuestions} preguntas puede tomar varios minutos.
             Por favor, no cierres esta ventana.
           </p>
         </motion.div>
