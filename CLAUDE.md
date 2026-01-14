@@ -52,7 +52,7 @@ The Django backend must be running for full functionality. See SETUP.md and SUPA
 ```
 app/
   (auth)/              # Protected routes (dashboard, documentos)
-  api/                 # API routes (generate-quiz, auth/sync)
+  api/                 # API routes (auth/sync)
   quiz/                # Quiz taking page
   results/             # Results page
   sign-in/, sign-up/   # Auth pages
@@ -70,7 +70,6 @@ lib/
   api/                 # API client modules
     django-api.ts      # Main Django API client
     documents-api.ts   # Document operations
-    external-api.ts    # Legacy API wrapper
   clerk/               # Clerk authentication utilities
   mappers/             # Data transformation between Django/Frontend
   utils/               # Utility functions
@@ -79,7 +78,6 @@ types/
   django-api.ts        # Django API response types
   question-bank.ts     # QuestionBank abstraction types
   quiz.ts              # Quiz/Question types (legacy local storage)
-  external-api.ts      # Legacy external API types
 
 store/
   quizStore.ts         # Zustand store for quiz state (legacy)
@@ -129,13 +127,6 @@ The system generates quiz questions from PDFs via the Django backend:
 2. Backend creates DjangoDocument and DjangoExam
 3. AI generates questions (OpenRouter API, stored in Django)
 4. Frontend fetches questions via `django-api.ts`
-
-**Important Notes**:
-
-- Large PDFs (>2MB) with 60+ questions may hit token limits
-- `app/api/generate-quiz/route.ts` has partial recovery logic for truncated JSON
-- Increased `max_tokens: 16000` to handle larger question sets
-- Warnings shown to users when requesting >50 questions
 
 ### Component Organization
 
