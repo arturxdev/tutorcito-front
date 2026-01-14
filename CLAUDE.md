@@ -60,7 +60,6 @@ app/
 components/
   auth/                # Authentication components
   documents/           # Document upload/management (legacy)
-  home/                # Home page components (legacy)
   question-banks/      # Question bank management (primary)
   quiz/                # Quiz interface components
   shared/              # Shared UI components
