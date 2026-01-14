@@ -27,7 +27,6 @@ export default function BancosPage() {
         getExams(),
       ]);
 
-      // Combine documents with their exams and processing status
       const documentsWithExams: DocumentWithExams[] = documentsData.map((doc) => {
         const docExams = examsData.filter((exam) => exam.document === doc.id);
         return {
