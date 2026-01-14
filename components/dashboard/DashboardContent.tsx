@@ -34,12 +34,6 @@ export default function DashboardContent({
 }: DashboardContentProps) {
   const [showCreateExamDialog, setShowCreateExamDialog] = useState(false);
 
-  const totalBanks = banks.length;
-  const totalQuestions = banks.reduce(
-    (sum, bank) => sum + bank.totalQuestions,
-    0
-  );
-
   const displayName =
     user?.firstName ||
     user?.emailAddresses[0]?.emailAddress?.split("@")[0] ||

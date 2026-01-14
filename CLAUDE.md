@@ -39,6 +39,7 @@ The Django backend must be running for full functionality. See SETUP.md and SUPA
 ## Architecture
 
 ### Tech Stack
+
 - **Framework**: Next.js 16 with App Router
 - **Language**: TypeScript
 - **State Management**: Zustand (store/quizStore.ts)
@@ -130,6 +131,7 @@ The system generates quiz questions from PDFs via the Django backend:
 4. Frontend fetches questions via `django-api.ts`
 
 **Important Notes**:
+
 - Large PDFs (>2MB) with 60+ questions may hit token limits
 - `app/api/generate-quiz/route.ts` has partial recovery logic for truncated JSON
 - Increased `max_tokens: 16000` to handle larger question sets
@@ -138,6 +140,7 @@ The system generates quiz questions from PDFs via the Django backend:
 ### Component Organization
 
 **Question Banks** (Primary UI):
+
 - `CreateBankForm.tsx`: Upload PDF and configure question generation
 - `BankCard.tsx`: Display question bank with metadata
 - `QuestionList.tsx`: List all questions in a bank
@@ -145,6 +148,7 @@ The system generates quiz questions from PDFs via the Django backend:
 - `RegenerateQuestionsDialog.tsx`: Regenerate questions for a bank
 
 **Quiz Interface**:
+
 - `components/quiz/`: Quiz-taking components (Kahoot-style buttons)
 - `app/quiz/page.tsx`: Main quiz page
 - `app/results/page.tsx`: Results display with score breakdown
@@ -152,6 +156,7 @@ The system generates quiz questions from PDFs via the Django backend:
 ### Type Mapping
 
 Django uses Spanish difficulty levels, frontend uses English:
+
 - Django: `'facil' | 'medio' | 'dificil'`
 - Frontend: `'easy' | 'medium' | 'hard'`
 
@@ -160,6 +165,7 @@ Mappers in `lib/mappers/` handle these conversions automatically.
 ### Common Development Patterns
 
 **API Calls from Server Components**:
+
 ```typescript
 import { auth } from '@clerk/nextjs/server';
 import { getDocuments } from '@/lib/api/django-api';
@@ -170,6 +176,7 @@ const documents = await getDocuments(token);
 ```
 
 **API Calls from Client Components**:
+
 ```typescript
 'use client';
 import { getDocuments } from '@/lib/api/django-api';
@@ -179,6 +186,7 @@ const documents = await getDocuments(); // Token added automatically
 ```
 
 **Creating a QuestionBank**:
+
 ```typescript
 import { createQuestionBank } from '@/lib/api/documents-api';
 
@@ -201,7 +209,12 @@ const bank = await createQuestionBank({
 ## Testing Considerations
 
 When testing question generation:
+
 - PDFs <1MB with <30 questions: Optimal performance
 - PDFs 1-2MB with 30-60 questions: May show warnings but should succeed
 - PDFs >2MB with >60 questions: High risk of token limit issues
 - Use smaller page ranges for large PDFs to reduce load
+
+## Important Rules
+
+Always use Context7 MCP when I need library/API documentation, code generation, setup or configuration steps without me having to explicitly ask.
