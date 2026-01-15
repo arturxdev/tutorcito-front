@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 import { UserMenu } from "@/components/auth/UserMenu";
 import { cn } from "@/lib/utils";
+import { Button3D } from "../ui/button-3d";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -40,8 +41,12 @@ export function Navbar() {
               ))}
             </div> */}
           </div>
-
-          <UserMenu />
+          <div className="flex items-center gap-4">
+            <Button3D size="sm" asChild>
+              <Link href="https://insigh.to/b/tutorcito" target="_blank" rel="noopener noreferrer">Vota por nuevas características</Link>
+            </Button3D>
+            <UserMenu />
+          </div>
         </div>
       </div>
     </nav>
