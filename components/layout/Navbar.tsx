@@ -41,9 +41,9 @@ export function Navbar() {
               ))}
             </div> */}
           </div>
-          <div className="flex">
+          <div className="flex items-center gap-4">
             <Button3D size="sm" asChild>
-              <Link href="https://insigh.to/b/tutorcito" target="_blank">Vota por nuevas caracteristricas</Link>
+              <Link href="https://insigh.to/b/tutorcito" target="_blank" rel="noopener noreferrer">Vota por nuevas características</Link>
             </Button3D>
             <UserMenu />
           </div>
