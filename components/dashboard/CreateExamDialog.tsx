@@ -6,7 +6,6 @@ import { useAuth } from '@clerk/nextjs';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Loader2, FileQuestion } from 'lucide-react';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
@@ -92,7 +91,6 @@ export function CreateExamDialog({ documents, open, onOpenChange }: CreateExamDi
     toast.loading('Generando examen...', { id: 'exam' });
 
     try {
-      // 1. Create exam (response should include questions)
       const token = await getToken();
       const response = await fetch(`${API_BASE_URL}/api/exams/`, {
         method: 'POST',
@@ -114,43 +112,29 @@ export function CreateExamDialog({ documents, open, onOpenChange }: CreateExamDi
       }
 
       const examData = await response.json();
-      console.log('📦 Exam data received:', examData);
-
-      // 2. Extract questions from the response
       const questions = examData.questions || [];
 
       if (!questions || questions.length === 0) {
         throw new Error('No se generaron preguntas para este examen');
       }
 
-      console.log(`✅ ${questions.length} preguntas recibidas`);
-
-      // 3. Get document
       const document = documents.find(d => d.id === selectedDocumentId)!;
-
-      // 4. Transform questions to DjangoQuestion format for transform function
       const djangoQuestions = questions.map((q: any) => ({
         question: q.question,
         options: q.options,
         difficulty: q.difficulty,
       }));
 
-      // 5. Transform and load into store
       const quiz = transformDjangoQuestions(djangoQuestions, examData, document);
-      console.log('🎯 Quiz transformed:', quiz);
       setQuiz(quiz);
 
-      // 6. Success and navigate
       toast.success('¡Examen listo!', {
         id: 'exam',
         description: `${questions.length} preguntas generadas`,
       });
 
       onOpenChange(false);
-
-      setTimeout(() => {
-        router.push('/quiz');
-      }, 300);
+      setTimeout(() => router.push('/quiz'), 300);
 
     } catch (err) {
       toast.error('Error al crear examen', {
@@ -166,7 +150,6 @@ export function CreateExamDialog({ documents, open, onOpenChange }: CreateExamDi
   const handleClose = () => {
     if (!isLoading) {
       onOpenChange(false);
-      // Reset form
       setSelectedDocumentId(null);
       setPageStart('1');
       setPageEnd('10');
@@ -181,55 +164,74 @@ export function CreateExamDialog({ documents, open, onOpenChange }: CreateExamDi
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      {/* Backdrop with backdrop blur */}
+      <motion.div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={handleClose}
+      >
+        {/* Modal Card - Responsive width */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          className="w-full max-w-lg"
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+          className="w-full max-w-lg mx-4"
+          onClick={(e) => e.stopPropagation()}
         >
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                Crear Examen
-              </h2>
-              <Button
-                variant="ghost"
-                size="icon"
+          <Card className="p-4 sm:p-6 max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#2460FF] to-[#590df2] flex items-center justify-center">
+                  <FileQuestion className="w-4 h-4 text-white" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">
+                  Crear Examen
+                </h2>
+              </div>
+              <button
                 onClick={handleClose}
                 disabled={isLoading}
+                className="w-10 h-10 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center transition-colors disabled:opacity-50"
               >
-                <X className="w-5 h-5" />
-              </Button>
+                <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              </button>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Document Selector */}
+              {/* Document Selector - Mobile optimized */}
               <div>
-                <Label htmlFor="document">Selecciona tu archivo</Label>
+                <Label htmlFor="document" className="text-sm font-semibold">
+                  Selecciona tu archivo
+                </Label>
                 <select
                   id="document"
                   value={selectedDocumentId || ''}
                   onChange={(e) => setSelectedDocumentId(e.target.value ? parseInt(e.target.value) : null)}
                   disabled={isLoading}
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:border-transparent"
+                  className="w-full mt-1 h-11 px-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:border-[#2460FF] focus:ring-2 focus:ring-[#2460FF]/20 transition-all disabled:opacity-50"
                 >
                   <option value="">-- Selecciona un documento --</option>
                   {documents.map((doc) => (
                     <option key={doc.id} value={doc.id}>
-                      {doc.name} ({doc.num_pages} páginas)
+                      {doc.name} ({doc.num_pages} {doc.num_pages === 1 ? 'página' : 'páginas'})
                     </option>
                   ))}
                 </select>
                 {errors.document && (
-                  <p className="text-sm text-red-600 mt-1">{errors.document}</p>
+                  <p className="text-xs sm:text-sm text-red-600 dark:text-red-400 mt-1">{errors.document}</p>
                 )}
               </div>
 
-              {/* Page Range */}
-              <div className="grid grid-cols-2 gap-4">
+              {/* Page Range - Stack vertical on mobile */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <Label htmlFor="pageStart">Desde</Label>
+                  <Label htmlFor="pageStart" className="text-sm font-semibold">
+                    Desde página
+                  </Label>
                   <Input
                     id="pageStart"
                     type="number"
@@ -238,15 +240,18 @@ export function CreateExamDialog({ documents, open, onOpenChange }: CreateExamDi
                     value={pageStart}
                     onChange={(e) => setPageStart(e.target.value)}
                     disabled={isLoading || !selectedDocumentId}
-                    placeholder="Página inicial"
+                    placeholder="Ej: 1"
+                    className="h-11 text-base mt-1"
                   />
                   {errors.pageStart && (
-                    <p className="text-sm text-red-600 mt-1">{errors.pageStart}</p>
+                    <p className="text-xs sm:text-sm text-red-600 dark:text-red-400 mt-1">{errors.pageStart}</p>
                   )}
                 </div>
 
                 <div>
-                  <Label htmlFor="pageEnd">Hasta</Label>
+                  <Label htmlFor="pageEnd" className="text-sm font-semibold">
+                    Hasta página
+                  </Label>
                   <Input
                     id="pageEnd"
                     type="number"
@@ -255,23 +260,27 @@ export function CreateExamDialog({ documents, open, onOpenChange }: CreateExamDi
                     value={pageEnd}
                     onChange={(e) => setPageEnd(e.target.value)}
                     disabled={isLoading || !selectedDocumentId}
-                    placeholder="Página final"
+                    placeholder="Ej: 10"
+                    className="h-11 text-base mt-1"
                   />
                   {errors.pageEnd && (
-                    <p className="text-sm text-red-600 mt-1">{errors.pageEnd}</p>
+                    <p className="text-xs sm:text-sm text-red-600 dark:text-red-400 mt-1">{errors.pageEnd}</p>
                   )}
                 </div>
               </div>
 
               {selectedDoc && (
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  💡 Máximo 10 páginas por examen
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                  <span>💡</span>
+                  <span>Máximo 10 páginas por examen</span>
                 </p>
               )}
 
               {/* Number of Questions */}
               <div>
-                <Label htmlFor="numQuestions">Número de preguntas</Label>
+                <Label htmlFor="numQuestions" className="text-sm font-semibold">
+                  Número de preguntas
+                </Label>
                 <Input
                   id="numQuestions"
                   type="number"
@@ -280,48 +289,50 @@ export function CreateExamDialog({ documents, open, onOpenChange }: CreateExamDi
                   value={numQuestions}
                   onChange={(e) => setNumQuestions(e.target.value)}
                   disabled={isLoading}
-                  placeholder="Número de preguntas"
+                  placeholder="Ej: 10"
+                  className="h-11 text-base mt-1"
                 />
                 {errors.numQuestions && (
-                  <p className="text-sm text-red-600 mt-1">{errors.numQuestions}</p>
+                  <p className="text-xs sm:text-sm text-red-600 dark:text-red-400 mt-1">{errors.numQuestions}</p>
                 )}
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  Entre 1 y 20 preguntas
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  Recomendado: 5-15 preguntas
                 </p>
               </div>
 
-              {/* Info Alert */}
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                <p className="text-sm text-blue-900 dark:text-blue-300">
-                  <strong>💡 Nota:</strong> La generación puede tomar algunos momentos.
-                  No cierres esta ventana.
+              {/* Info Alert - More compact on mobile */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 sm:p-4">
+                <p className="text-xs sm:text-sm text-blue-900 dark:text-blue-300 leading-relaxed">
+                  <strong className="font-semibold">💡 Nota:</strong> La generación puede tomar algunos momentos. No cierres esta ventana.
                 </p>
               </div>
 
-              {/* Actions */}
-              <div className="flex gap-3 pt-4">
+              {/* Actions - Stack vertical on mobile, primary button first */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2 sm:pt-4">
                 <Button3D
+                  type="button"
                   variant="white"
                   onClick={handleClose}
                   disabled={isLoading}
-                  className="flex-1"
+                  className="w-full sm:flex-1 min-h-[48px] order-2 sm:order-1"
                 >
                   Cancelar
                 </Button3D>
                 <Button3D
+                  type="submit"
                   variant="green"
                   disabled={isLoading || !selectedDocumentId}
-                  className="flex-1"
+                  className="w-full sm:flex-1 min-h-[48px] order-1 sm:order-2"
                 >
                   {isLoading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Generando...
+                      <span>Generando...</span>
                     </>
                   ) : (
                     <>
                       <FileQuestion className="w-4 h-4 mr-2" />
-                      Crear
+                      <span>Crear Examen</span>
                     </>
                   )}
                 </Button3D>
@@ -329,7 +340,7 @@ export function CreateExamDialog({ documents, open, onOpenChange }: CreateExamDi
             </form>
           </Card>
         </motion.div>
-      </div>
+      </motion.div>
     </AnimatePresence>
   );
 }

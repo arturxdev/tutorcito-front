@@ -3,8 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useUser } from "@clerk/nextjs";
-import { UserButton } from "@clerk/nextjs";
 import {
   GraduationCap,
   CloudUpload,
@@ -15,7 +13,6 @@ import {
   BarChart3,
   RocketIcon,
   PlayCircle,
-  Menu,
   Check,
   X,
   RefreshCw,
@@ -24,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { playSound, SOUNDS } from "@/utils/sounds";
 import { Button3D } from "@/components/ui/button-3d";
+import { LandingNavbar } from "@/components/layout/LandingNavbar";
 
 // Demo quiz questions - always the same 3 questions about world capitals
 const DEMO_QUIZ_QUESTIONS = [
@@ -120,9 +118,6 @@ const DEMO_QUIZ_QUESTIONS = [
 ];
 
 export default function LandingPage() {
-  // Auth state
-  const { isSignedIn, isLoaded } = useUser();
-
   // Quiz demo state
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -176,86 +171,10 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-200">
       <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden md:w-4/5 mx-auto">
         {/* Navbar */}
-        <nav className="sticky top-0 z-50 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-x border-gray-300 dark:border-gray-800">
-          <div className="px-4 md:px-8 py-4 flex items-center justify-between w-full max-w-[1280px] mx-auto">
-            <Link href="/" className="flex items-center gap-2">
-              <GraduationCap className="text-[#2460FF] w-8 h-8" />
-              <h2 className="text-[#2460FF] dark:text-white text-2xl font-black tracking-tight">
-                Tutorcito
-              </h2>
-            </Link>
-
-            <div className="hidden md:flex flex-1 justify-end gap-6 items-center">
-              <div className="flex items-center gap-6 mr-4">
-                <a
-                  className="text-gray-600 dark:text-gray-300 text-sm font-semibold hover:text-[#590df2] transition-colors"
-                  href="#features"
-                >
-                  Características
-                </a>
-                <a
-                  className="text-gray-600 dark:text-gray-300 text-sm font-semibold hover:text-[#590df2] transition-colors"
-                  href="#how-it-works"
-                >
-                  Cómo funciona
-                </a>
-                <a
-                  className="text-gray-600 dark:text-gray-300 text-sm font-semibold hover:text-[#590df2] transition-colors"
-                  href="#pricing"
-                >
-                  Precios
-                </a>
-              </div>
-
-              {/* Conditional rendering based on auth state */}
-              {!isLoaded ? (
-                // Loading state - show skeleton
-                <div className="flex gap-3">
-                  <div className="h-10 w-32 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-lg"></div>
-                </div>
-              ) : isSignedIn ? (
-                // User is authenticated - show Dashboard button + avatar
-                <div className="flex items-center gap-3">
-                  <Button3D asChild size="sm">
-                    <Link href="/dashboard">Dashboard</Link>
-                  </Button3D>
-
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox: "w-10 h-10",
-                        userButtonTrigger:
-                          "focus:shadow-none hover:opacity-80 transition-opacity",
-                      },
-                    }}
-                    afterSignOutUrl="/"
-                  />
-                </div>
-              ) : (
-                // User is not authenticated - show login/signup buttons
-                <div className="flex gap-3">
-                  <Button3D size="sm" variant="outline" asChild>
-                    <Link href="/sign-in">
-                      <span>Iniciar sesión</span>
-                    </Link>
-                  </Button3D>
-                  <Button3D asChild size="sm">
-                    <Link href="/sign-in">
-                      <span>Regístrate</span>
-                    </Link>
-                  </Button3D>
-                </div>
-              )}
-            </div>
-
-            <button className="md:hidden text-gray-700 dark:text-white">
-              <Menu className="w-6 h-6" />
-            </button>
-          </div>
-        </nav>
+        <LandingNavbar />
 
         {/* Hero Section */}
-        <section className=" flex flex-col items-center justify-center px-4 md:px-8 pt-12 pb-20 md:pt-20 md:pb-28 relative overflow-hidden bg-white dark:bg-transparent border-b border-x border-gray-300 dark:border-gray-800">
+        <section className=" flex flex-col items-center justify-center px-4 md:px-8 pt-8 pb-16 md:pt-20 md:pb-28 relative overflow-hidden bg-white dark:bg-transparent border-b border-x border-gray-300 dark:border-gray-800">
           {/* Background Pattern */}
           <div
             className="absolute inset-0 opacity-40 pointer-events-none"
@@ -294,14 +213,14 @@ export default function LandingPage() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
-                  <Button3D asChild>
+                  <Button3D asChild className="min-h-[48px]">
                     <Link href="/sign-in">
                       <RocketIcon className="mr-2 h-5 w-5" />
                       <span>Crear Quiz Gratis</span>
                     </Link>
                   </Button3D>
 
-                  <Button3D variant="outline">
+                  <Button3D variant="outline" className="min-h-[48px]">
                     <PlayCircle className="mr-2 h-5 w-5" />
                     <span>Ver Demo</span>
                   </Button3D>
@@ -485,7 +404,7 @@ export default function LandingPage() {
         {/* How It Works Section */}
         <section
           id="how-it-works"
-          className="py-16 md:py-24 bg-white dark:bg-gray-900/50 overflow-hidden relative border-b border-x border-gray-300 dark:border-gray-800"
+          className="py-12 md:py-24 bg-white dark:bg-gray-900/50 overflow-hidden relative border-b border-x border-gray-300 dark:border-gray-800"
         >
           <div
             className="absolute top-0 left-0 w-full h-full opacity-[0.03]"
@@ -639,7 +558,7 @@ export default function LandingPage() {
               }}
             ></div>
 
-            <div className="flex flex-col md:flex-row items-center justify-between md:p-20 relative z-10 gap-10">
+            <div className="flex flex-col md:flex-row items-center justify-between p-8 md:p-20 relative z-10 gap-10">
               <div className="flex flex-col gap-4 text-center md:text-left max-w-xl">
                 <h2 className="text-white text-3xl md:text-5xl font-black leading-tight tracking-tight">
                   ¿Listo para aprobar tu próximo examen?
@@ -673,66 +592,66 @@ export default function LandingPage() {
               </div>
 
               <div className="flex gap-12 md:gap-24 flex-wrap">
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-3">
                   <h4 className="text-gray-900 dark:text-white font-bold text-sm uppercase tracking-wider">
                     Producto
                   </h4>
                   <a
-                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors"
+                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors min-h-[44px] flex items-center"
                     href="#features"
                   >
                     Características
                   </a>
                   <a
-                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors"
+                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors min-h-[44px] flex items-center"
                     href="#pricing"
                   >
                     Precios
                   </a>
                   <a
-                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors"
+                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors min-h-[44px] flex items-center"
                     href="#"
                   >
                     Para Profesores
                   </a>
                 </div>
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-3">
                   <h4 className="text-gray-900 dark:text-white font-bold text-sm uppercase tracking-wider">
                     Compañía
                   </h4>
                   <a
-                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors"
+                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors min-h-[44px] flex items-center"
                     href="#"
                   >
                     Acerca de
                   </a>
                   <a
-                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors"
+                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors min-h-[44px] flex items-center"
                     href="#"
                   >
                     Blog
                   </a>
                   <a
-                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors"
+                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors min-h-[44px] flex items-center"
                     href="#"
                   >
                     Empleo
                   </a>
                 </div>
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-3">
                   <h4 className="text-gray-900 dark:text-white font-bold text-sm uppercase tracking-wider">
                     Legal
                   </h4>
                   <a
-                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors"
+                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors min-h-[44px] flex items-center"
                     href="#"
                   >
                     Privacidad
                   </a>
                   <a
-                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors"
+                    className="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-[#590df2] transition-colors min-h-[44px] flex items-center"
                     href="#"
                   >
                     Términos
