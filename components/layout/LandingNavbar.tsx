@@ -125,8 +125,8 @@ export function LandingNavbar() {
             href={link.href}
             label={link.label}
             onClick={(e) => {
-              const anchor = e.currentTarget as HTMLAnchorElement;
-              handleNavClick(e as any, anchor.href.split('#')[1] ? `#${anchor.href.split('#')[1]}` : anchor.href);
+              const anchor = e.currentTarget;
+              handleNavClick(e, anchor.href.split('#')[1] ? `#${anchor.href.split('#')[1]}` : anchor.href);
             }}
           />
         ))}

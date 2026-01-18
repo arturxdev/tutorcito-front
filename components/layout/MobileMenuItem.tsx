@@ -9,7 +9,7 @@ interface MobileMenuItemLinkProps {
   href: string;
   icon?: LucideIcon;
   label: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
   active?: boolean;
 }
 
