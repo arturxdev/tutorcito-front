@@ -7,9 +7,11 @@ import type {
   DjangoDocument,
   DjangoExam,
   DjangoQuestion,
+  DjangoAttempt,
   UploadDocumentResponse,
   CreateExamRequest,
 } from '@/types/django-api';
+import type { CreateAttemptRequest, DjangoAttemptResponse } from '@/types/quiz';
 import { redirect } from 'next/navigation';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
@@ -247,17 +249,30 @@ export async function deleteDocument(id: number, token?: string | null): Promise
  * @param token - Token opcional para Server Components
  */
 export async function getExams(documentId?: number, token?: string | null): Promise<DjangoExam[]> {
-  const url = documentId 
+  const url = documentId
     ? `${API_BASE_URL}/api/exams/?document=${documentId}`
     : `${API_BASE_URL}/api/exams/`;
-    
+
   const response = await authenticatedFetch(url, {}, token);
-  
+
   if (!response.ok) {
     throw new Error('Error al obtener exámenes');
   }
-  
-  return response.json();
+
+  const data = await response.json();
+
+  // Handle paginated response - extract results array
+  if (data && typeof data === 'object' && 'results' in data && Array.isArray(data.results)) {
+    return data.results;
+  }
+
+  // If it's already an array, return it directly
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  console.error('❌ [Django API] Unexpected response format from /api/exams/', data);
+  return [];
 }
 
 /**
@@ -330,13 +345,99 @@ export async function deleteExam(id: number, token?: string | null): Promise<voi
   const response = await authenticatedFetch(`${API_BASE_URL}/api/exams/${id}`, {
     method: 'DELETE',
   }, token);
-  
+
   if (!response.ok) {
     if (response.status === 404) {
       throw new Error('Examen no encontrado');
     }
     throw new Error('Error al eliminar examen');
   }
+}
+
+/**
+ * Guarda un intento de examen
+ * @param examId - ID del examen en Django
+ * @param attemptData - Datos del intento (score, answers, etc.)
+ * @param token - Token opcional para Server Components
+ */
+export async function createExamAttempt(
+  examId: number,
+  attemptData: CreateAttemptRequest,
+  token?: string | null
+): Promise<DjangoAttemptResponse> {
+  console.log('💾 [Django API] Guardando intento de examen');
+  console.log('💾 [Django API] Exam ID:', examId);
+  console.log('💾 [Django API] Score:', attemptData.score, '/', attemptData.total_questions);
+
+  const response = await authenticatedFetch(`${API_BASE_URL}/api/exams/${examId}/attempts/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(attemptData),
+  }, token);
+
+  if (!response.ok) {
+    console.error('❌ [Django API] Error guardando intento');
+    const error = await response.json().catch(() => ({ error: 'Error al guardar intento' }));
+    throw new Error(error.error || 'Error al guardar intento');
+  }
+
+  console.log('✅ [Django API] Intento guardado exitosamente');
+  return response.json();
+}
+
+/**
+ * Obtiene todos los intentos de exámenes del usuario
+ * @param token - Token opcional para Server Components
+ */
+export async function getExamAttempts(token?: string | null): Promise<DjangoAttempt[]> {
+  const response = await authenticatedFetch(`${API_BASE_URL}/api/exams/attempts/`, {}, token);
+
+  if (!response.ok) {
+    throw new Error('Error al obtener intentos');
+  }
+
+  const data = await response.json();
+
+  // Handle paginated response - extract results array
+  if (data && typeof data === 'object' && 'results' in data && Array.isArray(data.results)) {
+    return data.results;
+  }
+
+  // If it's already an array, return it directly
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  console.error('❌ [Django API] Unexpected response format from /api/exams/attempts/', data);
+  return [];
+}
+
+/**
+ * Obtiene los intentos de un examen específico
+ * @param examId - ID del examen
+ * @param token - Token opcional para Server Components
+ */
+export async function getAttemptsByExam(examId: number, token?: string | null): Promise<DjangoAttempt[]> {
+  const response = await authenticatedFetch(`${API_BASE_URL}/api/exams/attempts/?exam=${examId}`, {}, token);
+
+  if (!response.ok) {
+    throw new Error('Error al obtener intentos del examen');
+  }
+
+  const data = await response.json();
+
+  // Handle paginated response - extract results array
+  if (data && typeof data === 'object' && 'results' in data && Array.isArray(data.results)) {
+    return data.results;
+  }
+
+  // If it's already an array, return it directly
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  console.error('❌ [Django API] Unexpected response format from /api/exams/attempts/', data);
+  return [];
 }
 
 /**

@@ -10,12 +10,11 @@ import {
   updateDocument,
   deleteDocument,
   getExams,
-  getExamById,
   createExam,
-  deleteExam,
   getQuestionsByExam,
 } from './django-api';
 import type { QuestionBank, QuestionBankWithQuestions } from '@/types/question-bank';
+import type { DjangoQuestion } from '@/types/django-api';
 import { mapToQuestionBank, mapToQuestionBankWithQuestions } from '@/lib/mappers/question-bank-mapper';
 
 /**
@@ -42,9 +41,9 @@ export async function getQuestionBanks(token?: string | null): Promise<QuestionB
       
       // Tomar el primer exam como "principal" (podría ser el más reciente en el futuro)
       const primaryExam = docExams.length > 0 ? docExams[0] : null;
-      
+
       // Si hay exam, obtener sus preguntas
-      let questions: any[] = [];
+      let questions: DjangoQuestion[] = [];
       if (primaryExam) {
         try {
           questions = await getQuestionsByExam(primaryExam.id, token);
@@ -174,12 +173,12 @@ export async function updateQuestionBank(
   // Obtener exam y preguntas para mapear
   const exams = await getExams(documentId, token);
   const primaryExam = exams.length > 0 ? exams[0] : null;
-  
-  let questions: any[] = [];
+
+  let questions: DjangoQuestion[] = [];
   if (primaryExam) {
     questions = await getQuestionsByExam(primaryExam.id, token);
   }
-  
+
   return mapToQuestionBank(document, primaryExam, questions);
 }
 
