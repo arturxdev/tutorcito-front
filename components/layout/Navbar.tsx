@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, LayoutDashboard, Library, ExternalLink } from "lucide-react";
+import { Menu, LayoutDashboard, Library, ExternalLink, History } from "lucide-react";
 import { Logo } from "./Logo";
 import { UserMenu } from "@/components/auth/UserMenu";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ export function Navbar() {
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/documentos", label: "Bancos", icon: Library },
+    { href: "/historial", label: "Historial", icon: History },
   ];
 
   return (
@@ -53,7 +54,7 @@ export function Navbar() {
             <div className="hidden md:flex items-center gap-4">
               <Button3D size="sm" asChild>
                 <Link href="https://insigh.to/b/tutorcito" target="_blank" rel="noopener noreferrer">
-                  Vota por nuevas características
+                  Vota por características
                 </Link>
               </Button3D>
               <UserMenu />
@@ -94,7 +95,7 @@ export function Navbar() {
             <Button3D asChild size="sm" className="w-full min-h-[48px]">
               <Link href="https://insigh.to/b/tutorcito" target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="mr-2 h-4 w-4" />
-                Vota por nuevas características
+                Vota por características
               </Link>
             </Button3D>
           </div>

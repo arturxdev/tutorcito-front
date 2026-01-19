@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(npm run build:*)",
+      "Bash(ls:*)",
+      "Bash(git -C /Users/arturo/git/tutorcito/frontend log -p -- proxy.ts)",
+      "Bash(git -C /Users/arturo/git/tutorcito/frontend show HEAD:proxy.ts)",
+      "Bash(git -C /Users/arturo/git/tutorcito/frontend log --all --oneline)",
+      "Bash(git -C /Users/arturo/git/tutorcito/frontend diff HEAD~1 -- .env)"
+    ]
+  }
+}

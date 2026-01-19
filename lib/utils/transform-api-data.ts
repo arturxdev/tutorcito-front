@@ -152,6 +152,7 @@ export function transformDjangoQuestions(
       mediumCount,
       hardCount,
     },
+    examId: exam.id,
   };
 }
 

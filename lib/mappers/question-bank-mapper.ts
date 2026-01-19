@@ -43,35 +43,35 @@ export function mapToQuestion(djangoQuestion: DjangoQuestion): Question {
   // Intentamos manejar los casos más comunes
   if (Array.isArray(djangoQuestion.options)) {
     // Si es un array directo: [{text: "...", isCorrect: true}, ...]
-    djangoQuestion.options.forEach((opt: any) => {
+    djangoQuestion.options.forEach((opt: unknown) => {
       if (opt && typeof opt === 'object' && 'text' in opt && 'isCorrect' in opt) {
         answers.push({
-          text: String(opt.text),
-          isCorrect: Boolean(opt.isCorrect),
+          text: String((opt as { text: unknown }).text),
+          isCorrect: Boolean((opt as { isCorrect: unknown }).isCorrect),
         });
       }
     });
   } else if (typeof djangoQuestion.options === 'object' && djangoQuestion.options !== null) {
     // Si es un objeto: {a: {text: "...", isCorrect: true}, b: {...}, ...}
     // o {options: [{...}]}
-    const opts = (djangoQuestion.options as any).options || djangoQuestion.options;
-    
+    const opts = ('options' in djangoQuestion.options ? (djangoQuestion.options as Record<string, unknown>).options : djangoQuestion.options) as unknown;
+
     if (Array.isArray(opts)) {
-      opts.forEach((opt: any) => {
+      opts.forEach((opt: unknown) => {
         if (opt && typeof opt === 'object' && 'text' in opt && 'isCorrect' in opt) {
           answers.push({
-            text: String(opt.text),
-            isCorrect: Boolean(opt.isCorrect),
+            text: String((opt as { text: unknown }).text),
+            isCorrect: Boolean((opt as { isCorrect: unknown }).isCorrect),
           });
         }
       });
-    } else {
+    } else if (opts && typeof opts === 'object') {
       // Si es un objeto con keys arbitrarias
-      Object.values(opts).forEach((opt: any) => {
+      Object.values(opts).forEach((opt: unknown) => {
         if (opt && typeof opt === 'object' && 'text' in opt && 'isCorrect' in opt) {
           answers.push({
-            text: String(opt.text),
-            isCorrect: Boolean(opt.isCorrect),
+            text: String((opt as { text: unknown }).text),
+            isCorrect: Boolean((opt as { isCorrect: unknown }).isCorrect),
           });
         }
       });

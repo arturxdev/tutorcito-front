@@ -27,6 +27,7 @@ export interface GeneratedQuiz {
   questions: Question[];
   createdAt: string;
   config: QuizConfig;
+  examId?: number;
 }
 
 export interface QuizAttempt {
@@ -38,6 +39,7 @@ export interface QuizAttempt {
   totalQuestions: number;
   completedAt: string | null;
   startedAt: string;
+  djangoAttemptId?: number;
 }
 
 export interface FeedbackState {
@@ -63,4 +65,24 @@ export interface ScoreBreakdown {
   total: number;
   percentage: number;
   byDifficulty: Record<Difficulty, { correct: number; total: number }>;
+}
+
+export interface CreateAttemptRequest {
+  score: number;
+  total_questions: number;
+  answers: Record<string, string>;
+  started_at: string;
+  completed_at: string;
+}
+
+export interface DjangoAttemptResponse {
+  id: number;
+  exam: number;
+  user: number;
+  score: number;
+  total_questions: number;
+  answers: Record<string, unknown>;
+  started_at: string;
+  completed_at: string;
+  created_at: string;
 }

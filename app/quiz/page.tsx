@@ -114,10 +114,20 @@ export default function QuizPage() {
     }
   };
 
-  const handleFinish = () => {
-    finishAttempt();
-    playSound(SOUNDS.COMPLETE);
-    router.push('/results');
+  const handleFinish = async () => {
+    try {
+      await finishAttempt(true);
+      playSound(SOUNDS.COMPLETE);
+      router.push('/results');
+    } catch (error) {
+      console.error('Error guardando intento:', error);
+      toast.error('Error guardando el intento en el servidor', {
+        description: 'Tus resultados se han guardado localmente',
+      });
+      // Still proceed to results page even if API save fails
+      playSound(SOUNDS.COMPLETE);
+      router.push('/results');
+    }
   };
 
   const handleGoHome = () => {

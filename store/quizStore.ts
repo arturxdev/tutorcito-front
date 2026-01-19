@@ -6,9 +6,11 @@ import {
   QuizConfig,
   QuizState,
   FeedbackState,
+  CreateAttemptRequest,
 } from '@/types/quiz';
 import { StorageManager } from '@/utils/storage';
 import { selectRandomQuestions } from '@/utils/random';
+import { createExamAttempt } from '@/lib/api/django-api';
 
 interface QuizStore extends QuizState {
   // Actions
@@ -17,7 +19,7 @@ interface QuizStore extends QuizState {
   selectAnswer: (questionId: string, answerId: string) => void;
   nextQuestion: () => void;
   previousQuestion: () => void;
-  finishAttempt: () => void;
+  finishAttempt: (saveToApi?: boolean) => Promise<void>;
   resetQuiz: () => void;
   loadFromStorage: () => void;
   setLoading: (loading: boolean) => void;
@@ -125,8 +127,8 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
     }
   },
 
-  finishAttempt: () => {
-    const { currentAttempt, selectedAnswers } = get();
+  finishAttempt: async (saveToApi: boolean = false) => {
+    const { currentAttempt, selectedAnswers, currentQuiz } = get();
     if (!currentAttempt) return;
 
     // Calculate score
@@ -137,16 +139,49 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
       }
     });
 
+    const completedAt = new Date().toISOString();
+
     const completedAttempt: QuizAttempt = {
       ...currentAttempt,
       answers: selectedAnswers,
       score,
-      completedAt: new Date().toISOString(),
+      completedAt,
     };
 
     set({ currentAttempt: completedAttempt });
     StorageManager.saveAttempt(completedAttempt);
     StorageManager.clearCurrentAttempt();
+
+    // Save to Django API if requested and examId is available
+    if (saveToApi && currentQuiz?.examId) {
+      try {
+        console.log('📡 [Store] Guardando intento en Django API...');
+
+        const attemptData: CreateAttemptRequest = {
+          score,
+          total_questions: currentAttempt.totalQuestions,
+          answers: selectedAnswers,
+          started_at: currentAttempt.startedAt,
+          completed_at: completedAt,
+        };
+
+        const response = await createExamAttempt(currentQuiz.examId, attemptData);
+        console.log('✅ [Store] Intento guardado en Django:', response);
+
+        // Update attempt with Django attempt ID
+        set({
+          currentAttempt: {
+            ...completedAttempt,
+            djangoAttemptId: response.id,
+          },
+        });
+      } catch (error) {
+        console.error('❌ [Store] Error guardando intento en Django:', error);
+        // Don't throw - allow user to see results locally
+        // Error will be displayed by the caller
+        throw error;
+      }
+    }
   },
 
   resetQuiz: () => {
