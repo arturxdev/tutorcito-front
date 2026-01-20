@@ -8,7 +8,29 @@ Sentry.init({
   dsn: "https://bc791128ab17df496cf4bd05d90e780e@o4510711342170112.ingest.us.sentry.io/4510711348527104",
 
   // Add optional integrations for additional features
-  integrations: [Sentry.replayIntegration()],
+  integrations: [
+    Sentry.replayIntegration(),
+    Sentry.feedbackIntegration({
+      // Widget configuration
+      colorScheme: "system",
+      // Enable screenshots
+      enableScreenshot: true,
+      // Button text in Spanish
+      triggerLabel: "Reporta un error",
+      submitButtonLabel: "Enviar",
+      cancelButtonLabel: "Cancelar",
+      formTitle: "Enviar feedback",
+      nameLabel: "Nombre",
+      namePlaceholder: "Tu nombre",
+      emailLabel: "Correo electrónico",
+      emailPlaceholder: "tu@email.com",
+      messageLabel: "Descripción",
+      messagePlaceholder: "¿Qué pasó? ¿Qué esperabas que pasara?",
+      successMessageText: "¡Gracias por tu feedback!",
+      // Show the widget trigger button
+      autoInject: true,
+    }),
+  ],
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
   tracesSampleRate: 1,

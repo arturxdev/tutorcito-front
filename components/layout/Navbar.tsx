@@ -17,8 +17,8 @@ export function Navbar() {
 
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/documentos", label: "Bancos", icon: Library },
-    { href: "/historial", label: "Historial", icon: History },
+    // { href: "/documentos", label: "Bancos", icon: Library },
+    // { href: "/historial", label: "Historial", icon: History },
   ];
 
   return (
