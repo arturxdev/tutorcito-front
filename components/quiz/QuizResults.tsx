@@ -15,6 +15,7 @@ import { calculateScore, getMotivationalMessage } from "@/utils/scoring";
 import { playSound, SOUNDS } from "@/utils/sounds";
 import { GeneratedQuiz, QuizAttempt } from "@/types/quiz";
 import { Button3D } from "../ui/button-3d";
+import { Card3D } from "../ui/card-3d";
 
 interface QuizResultsProps {
   attempt: QuizAttempt;
@@ -96,7 +97,7 @@ export function QuizResults({
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
         >
-          <Card className="p-8 md:p-12 mb-8 bg-white dark:bg-gray-800 shadow-2xl">
+          <Card3D>
             <motion.div
               className="text-center mb-8"
               initial={{ opacity: 0, y: -20 }}
@@ -194,7 +195,7 @@ export function QuizResults({
                     className={`p-4 bg-${config.color}-50 dark:bg-${config.color}-950/20 border-${config.color}-200 dark:border-${config.color}-800`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <Badge className={`bg-${config.color}-500 text-white`}>
+                      <Badge className={`bg-${config.color}-100 text-black border-${config.color}-700`}>
                         {config.icon} {config.label}
                       </Badge>
                       <span
@@ -226,7 +227,7 @@ export function QuizResults({
                 Volver al Inicio
               </Button3D>
             </motion.div>
-          </Card>
+          </Card3D>
         </motion.div>
 
         {/* Answer Review */}
@@ -235,7 +236,7 @@ export function QuizResults({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1 }}
         >
-          <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">
+          <h2 className="text-2xl mt-8 font-bold mb-4 text-gray-800 dark:text-gray-200">
             Revisión de Respuestas
           </h2>
 

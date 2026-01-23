@@ -11,17 +11,17 @@ interface DifficultyBadgeProps {
 const DIFFICULTY_CONFIG = {
   easy: {
     label: 'Fácil',
-    color: 'bg-green-200 text-black border-green-500',
+    color: 'bg-green-100 text-green-800 border-green-500',
     icon: '🌱',
   },
   medium: {
     label: 'Media',
-    color: 'bg-yellow-200 text-black border-yellow-500',
+    color: 'bg-yellow-100 text-yellow-800 border-yellow-500',
     icon: '⚡',
   },
   hard: {
     label: 'Difícil',
-    color: 'bg-red-200 text-black border-red-500',
+    color: 'bg-red-100 text-red-800 border-red-500',
     icon: '🔥',
   },
 };
