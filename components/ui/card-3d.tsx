@@ -8,25 +8,47 @@ const card3DVariants = cva(
     variants: {
       variant: {
         default:
-          "shadow-[0_8px_0_#e5e7eb] dark:shadow-[0_8px_0_#1f2937] border border-gray-200 dark:border-gray-700 hover:-translate-y-1 hover:shadow-[0_10px_0_#d1d5db] dark:hover:shadow-[0_10px_0_#374151] active:translate-y-[2px] active:shadow-[0_4px_0_#e5e7eb] dark:active:shadow-[0_4px_0_#1f2937]",
+          "shadow-[0_8px_0_#e5e7eb] dark:shadow-[0_8px_0_#1f2937] border border-gray-200 dark:border-gray-700 active:translate-y-[2px] active:shadow-[0_4px_0_#e5e7eb] dark:active:shadow-[0_4px_0_#1f2937]",
         feature:
           "shadow-[0_6px_0_#e5e7eb] dark:shadow-[0_6px_0_#1f2937] border border-gray-200 dark:border-gray-700",
         interactive:
           "shadow-[0_6px_0_#e5e7eb] dark:shadow-[0_6px_0_#1f2937] border border-gray-200 dark:border-gray-700 cursor-pointer",
         primary:
-          "bg-[#2460FF] text-white shadow-[0_8px_0_#1D4ED8] border border-[#1D4ED8] hover:-translate-y-1 hover:shadow-[0_10px_0_#1D4ED8] active:translate-y-[2px] active:shadow-[0_4px_0_#1D4ED8]",
+          "bg-[#2460FF] text-white shadow-[0_8px_0_#1D4ED8] border border-[#1D4ED8] active:translate-y-[2px] active:shadow-[0_4px_0_#1D4ED8]",
         elevated:
-          "shadow-[0_12px_0_#d1d5db] dark:shadow-[0_12px_0_#374151] border border-gray-200 dark:border-gray-700 hover:-translate-y-2 hover:shadow-[0_14px_0_#9ca3af] dark:hover:shadow-[0_14px_0_#4b5563] active:translate-y-[4px] active:shadow-[0_6px_0_#d1d5db] dark:active:shadow-[0_6px_0_#374151]",
+          "shadow-[0_12px_0_#d1d5db] dark:shadow-[0_12px_0_#374151] border border-gray-200 dark:border-gray-700 active:translate-y-[4px] active:shadow-[0_6px_0_#d1d5db] dark:active:shadow-[0_6px_0_#374151]",
       },
       size: {
         sm: "p-4 rounded-xl",
         default: "p-6 rounded-2xl",
         lg: "p-8 rounded-[2rem]",
       },
+      hover: {
+        true: "",
+        false: "",
+      },
     },
+    compoundVariants: [
+      {
+        variant: "default",
+        hover: true,
+        className: "hover:-translate-y-1 hover:shadow-[0_10px_0_#d1d5db] dark:hover:shadow-[0_10px_0_#374151]",
+      },
+      {
+        variant: "primary",
+        hover: true,
+        className: "hover:-translate-y-1 hover:shadow-[0_10px_0_#1D4ED8]",
+      },
+      {
+        variant: "elevated",
+        hover: true,
+        className: "hover:-translate-y-2 hover:shadow-[0_14px_0_#9ca3af] dark:hover:shadow-[0_14px_0_#4b5563]",
+      },
+    ],
     defaultVariants: {
       variant: "default",
       size: "default",
+      hover: false,
     },
   }
 );
@@ -36,11 +58,11 @@ export interface Card3DProps
   VariantProps<typeof card3DVariants> { }
 
 const Card3D = React.forwardRef<HTMLDivElement, Card3DProps>(
-  ({ className, variant, size, ...props }, ref) => {
+  ({ className, variant, size, hover, ...props }, ref) => {
     return (
       <div
         ref={ref}
-        className={cn(card3DVariants({ variant, size, className }))}
+        className={cn(card3DVariants({ variant, size, hover, className }))}
         {...props}
       />
     );

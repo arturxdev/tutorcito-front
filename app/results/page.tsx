@@ -38,13 +38,6 @@ export default function ResultsPage() {
     return null;
   }
 
-  const handleNewQuiz = () => {
-    if (currentQuiz) {
-      playSound(SOUNDS.CLICK);
-      startAttempt(currentQuiz.config);
-      router.push("/quiz");
-    }
-  };
 
   const handleGoHome = () => {
     playSound(SOUNDS.CLICK);
@@ -56,7 +49,6 @@ export default function ResultsPage() {
     <QuizResults
       attempt={currentAttempt}
       quiz={currentQuiz}
-      onRetry={handleNewQuiz}
       onHome={handleGoHome}
     />
   );

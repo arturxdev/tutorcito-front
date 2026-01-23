@@ -71,7 +71,7 @@ export function AnswerButton({
       variant={variant}
       onClick={handleClick}
       disabled={disabled || isShowingFeedback}
-      className="w-full flex items-center  gap-3 justify-start disabled:opacity-100 min-h-[3rem] px-6 py-6 whitespace-normal"
+      className="w-full flex items-center  gap-3 justify-start disabled:opacity-100 min-h-[3rem] px-6 py-8 whitespace-normal"
     >
       <div
         className={`${iconBgColor} w-8 h-8 rounded flex items-center justify-center shrink-0 font-bold ${iconTextColor}`}
@@ -80,7 +80,7 @@ export function AnswerButton({
         {showIcon === "x" && <X className="w-5 h-5" />}
         {showIcon === "letter" && letter}
       </div>
-      <span className="font-bold text-sm md:text-base leading-snug text-left flex-1">
+      <span className="font-bold text-lg md:text-lg leading-snug text-left flex-1">
         {text}
       </span>
     </Button3D>

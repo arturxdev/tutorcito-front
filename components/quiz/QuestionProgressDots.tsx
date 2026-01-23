@@ -44,7 +44,7 @@ export function QuestionProgressDots({ current, total, answered }: QuestionProgr
             className={`
               w-2 h-2 rounded-full transition-all duration-300
               ${isCurrent
-                ? 'bg-purple-600 dark:bg-purple-500 w-3 h-3'
+                ? 'bg-docker-500 dark:bg-purple-500 w-3 h-3'
                 : isAnswered
                   ? 'bg-green-500 dark:bg-green-400'
                   : 'bg-gray-300 dark:bg-gray-600'}

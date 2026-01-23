@@ -14,22 +14,20 @@ import { Progress } from "@/components/ui/progress";
 import { calculateScore, getMotivationalMessage } from "@/utils/scoring";
 import { playSound, SOUNDS } from "@/utils/sounds";
 import { GeneratedQuiz, QuizAttempt } from "@/types/quiz";
-import { useQuizStore } from "@/store/quizStore";
+import { Button3D } from "../ui/button-3d";
 
 interface QuizResultsProps {
   attempt: QuizAttempt;
   quiz?: GeneratedQuiz | null;
-  onRetry?: () => void;
   onHome?: () => void;
   disableConfetti?: boolean;
 }
 
-export function QuizResults({ 
-  attempt, 
-  quiz, 
-  onRetry, 
+export function QuizResults({
+  attempt,
+  quiz,
   onHome,
-  disableConfetti = false 
+  disableConfetti = false
 }: QuizResultsProps) {
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(!disableConfetti);
@@ -41,7 +39,7 @@ export function QuizResults({
     if (!disableConfetti) {
       // Play completion sound
       playSound(SOUNDS.COMPLETE);
-      
+
       // Stop confetti after 5 seconds
       const timer = setTimeout(() => setShowConfetti(false), 5000);
       return () => clearTimeout(timer);
@@ -65,7 +63,7 @@ export function QuizResults({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gray-100">
       {/* Confetti */}
       {showConfetti && scoreData.percentage >= 60 && (
         <Confetti
@@ -104,7 +102,7 @@ export function QuizResults({
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800">
                 {disableConfetti ? "Detalle del Examen" : "¡Quiz Completado!"}
               </h1>
               <p className="text-xl text-gray-600 dark:text-gray-400">
@@ -140,9 +138,8 @@ export function QuizResults({
                     strokeLinecap="round"
                     initial={{ strokeDasharray: "0 552" }}
                     animate={{
-                      strokeDasharray: `${
-                        (scoreData.percentage / 100) * 552
-                      } 552`,
+                      strokeDasharray: `${(scoreData.percentage / 100) * 552
+                        } 552`,
                     }}
                     transition={{ duration: 1.5, ease: "easeOut" }}
                   />
@@ -154,14 +151,13 @@ export function QuizResults({
                       x2="100%"
                       y2="100%"
                     >
-                      <stop offset="0%" stopColor="#8B5CF6" />
                       <stop offset="100%" stopColor="#3B82F6" />
                     </linearGradient>
                   </defs>
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <motion.div
-                    className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
+                    className="text-5xl font-bold text-gray-800"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5 }}
@@ -225,25 +221,10 @@ export function QuizResults({
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
             >
-              {onRetry && (
-                <Button
-                  size="lg"
-                  onClick={onRetry}
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 gap-2"
-                >
-                  <RefreshCw size={20} />
-                  Nuevo Intento
-                </Button>
-              )}
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={onHome}
-                className="gap-2"
-              >
+              <Button3D onClick={onHome} variant="outline">
                 <Home size={20} />
-                {disableConfetti ? "Volver" : "Volver al Inicio"}
-              </Button>
+                Volver al Inicio
+              </Button3D>
             </motion.div>
           </Card>
         </motion.div>
@@ -273,11 +254,10 @@ export function QuizResults({
               return (
                 <Card
                   key={question.id}
-                  className={`overflow-hidden ${
-                    isCorrect
-                      ? "border-green-500 dark:border-green-600"
-                      : "border-red-500 dark:border-red-600"
-                  }`}
+                  className={`overflow-hidden ${isCorrect
+                    ? "border-green-500 dark:border-green-600"
+                    : "border-red-500 dark:border-red-600"
+                    }`}
                 >
                   <button
                     onClick={() => toggleQuestion(question.id)}
@@ -285,9 +265,8 @@ export function QuizResults({
                   >
                     <div className="flex items-center gap-4 text-left flex-1">
                       <div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${
-                          isCorrect ? "bg-green-500" : "bg-red-500"
-                        }`}
+                        className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${isCorrect ? "bg-green-500" : "bg-red-500"
+                          }`}
                       >
                         {isCorrect ? "✓" : "✗"}
                       </div>
@@ -297,19 +276,18 @@ export function QuizResults({
                         </p>
                         <Badge
                           variant="outline"
-                          className={`mt-2 ${
-                            question.difficulty === "easy"
-                              ? "border-green-500 text-green-700"
-                              : question.difficulty === "medium"
+                          className={`mt-2 ${question.difficulty === "easy"
+                            ? "border-green-500 text-green-700"
+                            : question.difficulty === "medium"
                               ? "border-yellow-500 text-yellow-700"
                               : "border-red-500 text-red-700"
-                          }`}
+                            }`}
                         >
                           {question.difficulty === "easy"
                             ? "🌱 Fácil"
                             : question.difficulty === "medium"
-                            ? "⚡ Media"
-                            : "🔥 Difícil"}
+                              ? "⚡ Media"
+                              : "🔥 Difícil"}
                         </Badge>
                       </div>
                     </div>
@@ -334,11 +312,10 @@ export function QuizResults({
                               Tu respuesta:
                             </p>
                             <p
-                              className={`p-3 rounded-lg ${
-                                isCorrect
-                                  ? "bg-green-100 dark:bg-green-950/30 text-green-800 dark:text-green-200 border border-green-300 dark:border-green-700"
-                                  : "bg-red-100 dark:bg-red-950/30 text-red-800 dark:text-red-200 border border-red-300 dark:border-red-700"
-                              }`}
+                              className={`p-3 rounded-lg ${isCorrect
+                                ? "bg-green-100 dark:bg-green-950/30 text-green-800 dark:text-green-200 border border-green-300 dark:border-green-700"
+                                : "bg-red-100 dark:bg-red-950/30 text-red-800 dark:text-red-200 border border-red-300 dark:border-red-700"
+                                }`}
                             >
                               {userAnswer.text} {isCorrect ? "✓" : "✗"}
                             </p>

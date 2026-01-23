@@ -189,49 +189,49 @@ export default function QuizPage() {
                 {currentQuestion.question}
               </motion.h2>
 
-            {/* Answer Buttons */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-              {shuffledAnswers.map((answer, index) => (
-                <motion.div
-                  key={answer.id}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.1 + index * 0.1 }}
+              {/* Answer Buttons */}
+              <div className="grid grid-cols-1 gap-4 mb-8">
+                {shuffledAnswers.map((answer, index) => (
+                  <motion.div
+                    key={answer.id}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.1 + index * 0.1 }}
+                  >
+                    <AnswerButton
+                      letter={['A', 'B', 'C', 'D'][index] as 'A' | 'B' | 'C' | 'D'}
+                      text={answer.text}
+                      onClick={() => handleAnswerSelect(answer.id)}
+                      isSelected={selectedAnswerId === answer.id}
+                      feedbackState={{
+                        isSelectedAnswer: feedbackState?.selectedAnswerId === answer.id,
+                        isCorrectAnswer: feedbackState?.correctAnswerId === answer.id,
+                        isShowingFeedback: feedbackState?.isVisible || false,
+                      }}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Progress Dots */}
+              <QuestionProgressDots
+                current={currentQuestionIndex + 1}
+                total={currentAttempt.questions.length}
+                answered={answeredSet}
+              />
+
+              {/* Next Button */}
+              <div className="flex justify-center pt-6">
+                <Button3D
+                  variant="primary"
+                  onClick={handleNext}
+                  disabled={!selectedAnswerId}
+                  className="gap-2 min-w-[200px]"
                 >
-                  <AnswerButton
-                    letter={['A', 'B', 'C', 'D'][index] as 'A' | 'B' | 'C' | 'D'}
-                    text={answer.text}
-                    onClick={() => handleAnswerSelect(answer.id)}
-                    isSelected={selectedAnswerId === answer.id}
-                    feedbackState={{
-                      isSelectedAnswer: feedbackState?.selectedAnswerId === answer.id,
-                      isCorrectAnswer: feedbackState?.correctAnswerId === answer.id,
-                      isShowingFeedback: feedbackState?.isVisible || false,
-                    }}
-                  />
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Progress Dots */}
-            <QuestionProgressDots
-              current={currentQuestionIndex + 1}
-              total={currentAttempt.questions.length}
-              answered={answeredSet}
-            />
-
-            {/* Next Button */}
-            <div className="flex justify-center pt-6">
-              <Button3D
-                variant="primary"
-                onClick={handleNext}
-                disabled={!selectedAnswerId}
-                className="gap-2 min-w-[200px]"
-              >
-                {isLastQuestion ? 'Finalizar' : 'Siguiente'}
-                <ChevronRight size={20} />
-              </Button3D>
-            </div>
+                  {isLastQuestion ? 'Finalizar' : 'Siguiente'}
+                  <ChevronRight size={20} />
+                </Button3D>
+              </div>
             </motion.div>
           </Card3D>
         </AnimatePresence>
@@ -255,15 +255,16 @@ export default function QuizPage() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex gap-2">
-            <Button variant="outline" onClick={() => setShowFinishDialog(false)}>
+            <Button3D size="sm" variant="outline" onClick={() => setShowFinishDialog(false)}>
               Continuar
-            </Button>
-            <Button
+            </Button3D>
+            <Button3D
               onClick={handleFinish}
-              className="bg-gradient-to-r from-purple-600 to-blue-600"
+              size="sm"
+              variant="primary"
             >
               Ver Resultados
-            </Button>
+            </Button3D>
           </DialogFooter>
         </DialogContent>
       </Dialog>

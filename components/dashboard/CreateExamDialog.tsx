@@ -185,7 +185,7 @@ export function CreateExamDialog({ documents, open, onOpenChange }: CreateExamDi
             {/* Header */}
             <div className="flex items-center justify-between mb-4 sm:mb-6">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#2460FF] to-[#590df2] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br bg-docker-500 flex items-center justify-center">
                   <FileQuestion className="w-4 h-4 text-white" />
                 </div>
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">
