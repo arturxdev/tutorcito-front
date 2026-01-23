@@ -33,30 +33,17 @@ export async function getQuestionBanks(token?: string | null): Promise<QuestionB
   const allExams = await getExams(undefined, token);
   console.log(`📚 [Documents API] Found ${allExams.length} exams`);
   
-  // 3. Para cada documento, encontrar su exam principal y sus preguntas
-  const banks = await Promise.all(
-    documents.map(async (doc) => {
-      // Encontrar exams de este documento
-      const docExams = allExams.filter(e => e.document === doc.id);
-      
-      // Tomar el primer exam como "principal" (podría ser el más reciente en el futuro)
-      const primaryExam = docExams.length > 0 ? docExams[0] : null;
+  // 3. Para cada documento, encontrar su exam principal
+  const banks = documents.map((doc) => {
+    // Encontrar exams de este documento
+    const docExams = allExams.filter(e => e.document === doc.id);
 
-      // Si hay exam, obtener sus preguntas
-      let questions: DjangoQuestion[] = [];
-      if (primaryExam) {
-        try {
-          questions = await getQuestionsByExam(primaryExam.id, token);
-        } catch (error) {
-          console.error(`❌ Error getting questions for exam ${primaryExam.id}:`, error);
-          // Continuar con array vacío si falla
-        }
-      }
-      
-      // Mapear a QuestionBank
-      return mapToQuestionBank(doc, primaryExam, questions);
-    })
-  );
+    // Tomar el primer exam como "principal" (podría ser el más reciente en el futuro)
+    const primaryExam = docExams.length > 0 ? docExams[0] : null;
+
+    // Mapear a QuestionBank (sin cargar preguntas por ahora - el endpoint no existe)
+    return mapToQuestionBank(doc, primaryExam, []);
+  });
   
   console.log(`✅ [Documents API] Mapped ${banks.length} question banks`);
   return banks;
@@ -93,14 +80,11 @@ export async function getQuestionBankById(id: string, token?: string | null): Pr
   
   // 3. Tomar el primer exam como principal
   const primaryExam = exams[0];
-  
-  // 4. Obtener preguntas del exam
-  const questions = await getQuestionsByExam(primaryExam.id, token);
-  
-  console.log(`✅ [Documents API] Found ${questions.length} questions for bank ${id}`);
-  
-  // 5. Mapear y retornar
-  return mapToQuestionBankWithQuestions(document, primaryExam, questions);
+
+  console.log(`✅ [Documents API] Found bank ${id} with exam ${primaryExam.id}`);
+
+  // 4. Mapear y retornar (sin cargar preguntas por ahora - el endpoint no existe)
+  return mapToQuestionBankWithQuestions(document, primaryExam, []);
 }
 
 /**
