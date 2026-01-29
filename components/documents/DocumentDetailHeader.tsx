@@ -1,22 +1,22 @@
 'use client';
 
 import { Calendar, FileText, Download, Layers } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import type { DjangoDocument } from '@/types/django-api';
+import { Card } from '@/src/shared/ui/card';
+import { Badge } from '@/src/shared/ui/badge';
+import { Button } from '@/src/shared/ui/button';
+import type { DocumentModel } from '@/src/entities';
 import { formatFileSize, getStatusBadge } from '@/utils/document-status';
 import type { DocumentProcessingStatus } from '@/types/django-api';
 
 interface DocumentDetailHeaderProps {
-  document: DjangoDocument;
+  document: DocumentModel;
   examCount: number;
   processingStatus: DocumentProcessingStatus;
 }
 
 export function DocumentDetailHeader({ document, examCount, processingStatus }: DocumentDetailHeaderProps) {
   const statusBadge = getStatusBadge(processingStatus);
-  
+
   const formattedDate = new Date(document.created_at).toLocaleDateString('es-ES', {
     day: 'numeric',
     month: 'long',

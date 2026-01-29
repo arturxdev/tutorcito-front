@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Slider } from '@/components/ui/slider';
-import { Label } from '@/components/ui/label';
+import { Slider, Label } from '@/src/shared/ui';
 
 interface QuestionConfigProps {
   onChange: (config: {
@@ -16,10 +15,10 @@ interface QuestionConfigProps {
   maxQuestions?: number;
 }
 
-export function QuestionConfig({ 
-  onChange, 
+export function QuestionConfig({
+  onChange,
   disabled,
-  maxQuestions = 100 
+  maxQuestions = 100
 }: QuestionConfigProps) {
   const [totalQuestions, setTotalQuestions] = useState(30);
   const [easyCount, setEasyCount] = useState(10);
@@ -77,7 +76,7 @@ export function QuestionConfig({
               de {maxQuestions} disponibles
             </span>
           </div>
-          
+
           <Slider
             id="total-questions"
             min={3}
@@ -88,16 +87,16 @@ export function QuestionConfig({
             disabled={disabled}
             className="w-full"
           />
-          
+
           <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
             <span>Min: 3</span>
             <span>Max: {maxQuestions}</span>
           </div>
-          
+
           {totalQuestions > 50 && (
             <div className="mt-2 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
               <p className="text-xs text-amber-900 dark:text-amber-300">
-                ⚠️ <strong>Nota:</strong> Generar más de 50 preguntas puede tomar varios minutos 
+                ⚠️ <strong>Nota:</strong> Generar más de 50 preguntas puede tomar varios minutos
                 y podría fallar con PDFs muy grandes. Se recomienda empezar con 30-40 preguntas.
               </p>
             </div>
@@ -109,7 +108,7 @@ export function QuestionConfig({
         <Label className="text-lg font-semibold mb-4 block">
           Distribución por Dificultad (Manual)
         </Label>
-        
+
         <div className="space-y-4 mb-4">
           {/* Fácil */}
           <div>

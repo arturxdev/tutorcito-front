@@ -1,6 +1,6 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/src/shared/ui/badge';
 import { Difficulty } from '@/types/quiz';
 import { motion } from 'framer-motion';
 

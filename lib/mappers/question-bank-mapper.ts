@@ -2,15 +2,16 @@
  * Mappers para convertir entre tipos de Django y tipos de QuestionBank del frontend
  */
 
-import type { DjangoDocument, DjangoExam, DjangoQuestion } from '@/types/django-api';
+import type { DjangoExam, DjangoQuestion } from '@/types/django-api';
 import type { QuestionBank, QuestionBankWithQuestions, Question, Answer } from '@/types/question-bank';
 import { countByDifficulty, toFrontendDifficulty } from '@/lib/utils/difficulty-mapper';
+import { DocumentModel } from '@/src/entities';
 
 /**
  * Mapea un Document de Django + Exam + Questions a QuestionBank
  */
 export function mapToQuestionBank(
-  document: DjangoDocument,
+  document: DocumentModel,
   exam: DjangoExam | null,
   questions: DjangoQuestion[]
 ): QuestionBank {
@@ -25,7 +26,7 @@ export function mapToQuestionBank(
     easyCount: counts.easy,
     mediumCount: counts.medium,
     hardCount: counts.hard,
-    createdAt: document.created_at,
+    createdAt: document.created_at.toISOString(),
     _documentId: document.id,
     _examId: exam?.id ?? null,
   };
@@ -38,7 +39,7 @@ export function mapToQuestion(djangoQuestion: DjangoQuestion): Question {
   // Django guarda las opciones en un JSONField con estructura flexible
   // Necesitamos extraer las respuestas del campo options
   const answers: Answer[] = [];
-  
+
   // El campo options puede tener diferentes estructuras según cómo Django lo guardó
   // Intentamos manejar los casos más comunes
   if (Array.isArray(djangoQuestion.options)) {
@@ -90,7 +91,7 @@ export function mapToQuestion(djangoQuestion: DjangoQuestion): Question {
  * Mapea Document + Exam + Questions a QuestionBankWithQuestions
  */
 export function mapToQuestionBankWithQuestions(
-  document: DjangoDocument,
+  document: DocumentModel,
   exam: DjangoExam,
   questions: DjangoQuestion[]
 ): QuestionBankWithQuestions {

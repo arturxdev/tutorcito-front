@@ -2,7 +2,8 @@
  * Utilidades para determinar el estado de procesamiento de documentos
  */
 
-import type { DjangoDocument, DjangoExam, DocumentProcessingStatus } from '@/types/django-api';
+import { DocumentModel } from '@/src/entities/document/model';
+import type { DjangoExam, DocumentProcessingStatus } from '@/types/django-api';
 
 /**
  * Determina el estado de procesamiento de un documento basado en sus exámenes
@@ -15,33 +16,33 @@ import type { DjangoDocument, DjangoExam, DocumentProcessingStatus } from '@/typ
  * - Por defecto → ready
  */
 export function getDocumentProcessingStatus(
-  document: DjangoDocument,
+  document: DocumentModel,
   exams: DjangoExam[]
 ): DocumentProcessingStatus {
   // Si tiene exams completados, está listo
   if (exams.some(exam => exam.status === 'done')) {
     return 'ready';
   }
-  
+
   // Si tiene exams fallidos, falló
   if (exams.some(exam => exam.status === 'fail')) {
     return 'failed';
   }
-  
+
   // Si tiene exams procesando, está procesando
   if (exams.some(exam => exam.status === 'process')) {
     return 'processing';
   }
-  
+
   // Si no tiene exams pero fue creado recientemente, asumimos procesando
   const createdAt = new Date(document.created_at);
   const now = new Date();
   const diffMinutes = (now.getTime() - createdAt.getTime()) / (1000 * 60);
-  
+
   if (diffMinutes < 5) {
     return 'processing';
   }
-  
+
   // Por defecto, listo (documento cargado sin exams)
   return 'ready';
 }

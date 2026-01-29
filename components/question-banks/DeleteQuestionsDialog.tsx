@@ -9,8 +9,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+} from '@/src/shared/ui/dialog';
+import { Button } from '@/src/shared/ui/button';
 import { toast } from 'sonner';
 
 interface DeleteQuestionsDialogProps {

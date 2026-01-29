@@ -2,7 +2,6 @@
  * Tipos para Question Banks (abstracción sobre Documents + Exams de Django)
  */
 
-import type { DjangoDocument, DjangoExam, DjangoQuestion } from './django-api';
 
 /**
  * QuestionBank representa un Document de Django con su Exam principal
@@ -18,7 +17,7 @@ export interface QuestionBank {
   mediumCount: number;
   hardCount: number;
   createdAt: string;
-  
+
   // Referencias internas (opcionales, para debugging)
   _documentId?: number;
   _examId?: number | null;

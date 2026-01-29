@@ -3,9 +3,9 @@
 import { useState, useMemo } from 'react';
 import { Search, Filter } from 'lucide-react';
 import { QuestionItem } from './QuestionItem';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Input } from '@/src/shared/ui/input';
+import { Button } from '@/src/shared/ui/button';
+import { Badge } from '@/src/shared/ui/badge';
 
 interface Answer {
   id: string;

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useUser } from '@clerk/nextjs';
 import { UserButton } from '@clerk/nextjs';
 import { GraduationCap, Menu } from 'lucide-react';
-import { Button3D } from '@/components/ui/button-3d';
+import { Button3D } from '@/src/shared/ui/button-3d';
 import { MobileMenu } from './MobileMenu';
 import { MobileMenuItem, MobileMenuSeparator } from './MobileMenuItem';
 

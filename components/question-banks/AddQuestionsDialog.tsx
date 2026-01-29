@@ -9,8 +9,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+} from '@/src/shared/ui/dialog';
+import { Button } from '@/src/shared/ui/button';
 import { QuestionConfig } from '@/components/shared/QuestionConfig';
 import { CustomPromptInput } from '@/components/shared/CustomPromptInput';
 import { toast } from 'sonner';
@@ -109,7 +109,7 @@ export function AddQuestionsDialog({
           {/* Current State Info */}
           <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
             <p className="text-sm text-blue-900 dark:text-blue-300">
-              📊 Actualmente tienes <strong>{currentTotalQuestions}</strong> preguntas. 
+              📊 Actualmente tienes <strong>{currentTotalQuestions}</strong> preguntas.
               Puedes agregar hasta <strong>{maxQuestionsAllowed}</strong> más.
             </p>
           </div>
@@ -129,11 +129,10 @@ export function AddQuestionsDialog({
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Total después de agregar:
               </span>
-              <span className={`text-lg font-bold ${
-                newTotal > 100 
-                  ? 'text-red-600 dark:text-red-400' 
+              <span className={`text-lg font-bold ${newTotal > 100
+                  ? 'text-red-600 dark:text-red-400'
                   : 'text-purple-600 dark:text-purple-400'
-              }`}>
+                }`}>
                 {newTotal} / 100
               </span>
             </div>

@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { StorageManager } from "@/utils/storage";
 import { QuizAttempt, GeneratedQuiz } from "@/types/quiz";
 import { QuizResults } from "@/components/quiz/QuizResults";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/src/shared/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useQuizStore } from "@/store/quizStore";
 
@@ -19,11 +19,11 @@ export default function HistoryDetailPage() {
   useEffect(() => {
     // Check if params.id exists and is a string
     const id = Array.isArray(params?.id) ? params?.id[0] : params?.id;
-    
+
     if (id) {
       const attempts = StorageManager.getAllAttempts();
       const foundAttempt = attempts.find(a => a.id === id);
-      
+
       if (foundAttempt) {
         setAttempt(foundAttempt);
         const foundQuiz = StorageManager.getQuizById(foundAttempt.quizId);
@@ -59,22 +59,22 @@ export default function HistoryDetailPage() {
   };
 
   return (
-    <HistoryDetailContent 
-      attempt={attempt} 
-      quiz={quiz} 
+    <HistoryDetailContent
+      attempt={attempt}
+      quiz={quiz}
       onBack={handleBack}
     />
   );
 }
 
-function HistoryDetailContent({ 
-  attempt, 
-  quiz, 
-  onBack 
-}: { 
-  attempt: QuizAttempt; 
-  quiz: GeneratedQuiz | null; 
-  onBack: () => void; 
+function HistoryDetailContent({
+  attempt,
+  quiz,
+  onBack
+}: {
+  attempt: QuizAttempt;
+  quiz: GeneratedQuiz | null;
+  onBack: () => void;
 }) {
   const router = useRouter();
   const { startAttempt, setQuiz: setStoreQuiz } = useQuizStore();
@@ -92,7 +92,6 @@ function HistoryDetailContent({
       attempt={attempt}
       quiz={quiz}
       onHome={onBack}
-      onRetry={quiz ? handleRetry : undefined}
       disableConfetti={true}
     />
   );

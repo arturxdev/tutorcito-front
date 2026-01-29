@@ -2,9 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { FileText, Calendar, Trash2, Eye } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/src/shared/ui/button';
+import { Card } from '@/src/shared/ui/card';
+import { Badge } from '@/src/shared/ui/badge';
 import Link from 'next/link';
 
 interface BankCardProps {
@@ -78,7 +78,7 @@ export function BankCard({
               {totalQuestions}
             </Badge>
           </div>
-          
+
           <div className="flex gap-2 flex-wrap">
             <Badge className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50">
               🟢 Fácil: {easyCount}
@@ -106,7 +106,7 @@ export function BankCard({
               Ver Detalles
             </Button>
           </Link>
-          
+
           {onDelete && (
             <Button
               variant="outline"

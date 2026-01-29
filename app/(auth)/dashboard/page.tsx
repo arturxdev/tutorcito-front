@@ -1,7 +1,6 @@
 import { auth, currentUser } from '@clerk/nextjs/server';
-import { getQuestionBanks } from '@/lib/api/documents-api';
-import { getDocuments } from '@/lib/api/django-api';
 import DashboardContent from '@/components/dashboard/DashboardContent';
+import { getDocuments } from '@/src/entities';
 
 export default async function DashboardPage() {
   const user = await currentUser();
@@ -14,7 +13,6 @@ export default async function DashboardPage() {
   const { getToken } = await auth();
   const token = await getToken();
 
-  const banks = await getQuestionBanks(token);
   const documents = await getDocuments(token);
 
   // Serialize user data to plain object for Client Component
@@ -29,5 +27,5 @@ export default async function DashboardPage() {
     imageUrl: user.imageUrl,
   };
 
-  return <DashboardContent user={userData} banks={banks} documents={documents} />;
+  return <DashboardContent user={userData} documents={documents} />;
 }

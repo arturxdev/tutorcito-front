@@ -1,8 +1,8 @@
 'use client';
 
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Card } from '@/src/shared/ui/card';
+import { Badge } from '@/src/shared/ui/badge';
+import { Button } from '@/src/shared/ui/button';
 import { FileText, Calendar, Loader2, CheckCircle2, XCircle, Play } from 'lucide-react';
 import type { DjangoExam } from '@/types/django-api';
 

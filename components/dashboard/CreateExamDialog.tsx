@@ -6,16 +6,16 @@ import { useAuth } from '@clerk/nextjs';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Loader2, FileQuestion } from 'lucide-react';
 import { toast } from 'sonner';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card } from '@/components/ui/card';
+import { Input } from '@/src/shared/ui/input';
+import { Label } from '@/src/shared/ui/label';
+import { Card } from '@/src/shared/ui/card';
 import { useQuizStore } from '@/store/quizStore';
 import { transformDjangoQuestions } from '@/lib/utils/transform-api-data';
-import type { DjangoDocument } from '@/types/django-api';
-import { Button3D } from '../ui/button-3d';
+import type { DocumentModel } from '@/src/entities';
+import { Button3D } from '../../src/shared/ui/button-3d';
 
 interface CreateExamDialogProps {
-  documents: DjangoDocument[];
+  documents: DocumentModel[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }

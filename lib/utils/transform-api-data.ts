@@ -3,7 +3,6 @@ import {
   DjangoQuestion,
   QuestionDifficulty,
   DjangoExam,
-  DjangoDocument,
 } from '@/types/django-api';
 import {
   Question,
@@ -11,6 +10,7 @@ import {
   Difficulty,
   GeneratedQuiz,
 } from '@/types/quiz';
+import { DocumentModel } from '@/src/entities';
 
 /**
  * Mapea la dificultad de Django al formato interno del quiz
@@ -130,7 +130,7 @@ function transformQuestion(djangoQuestion: DjangoQuestion, index: number): Quest
 export function transformDjangoQuestions(
   questions: DjangoQuestion[],
   exam: DjangoExam,
-  document: DjangoDocument
+  document: DocumentModel
 ): GeneratedQuiz {
   const transformedQuestions: Question[] = questions.map((q, index) => transformQuestion(q, index));
 

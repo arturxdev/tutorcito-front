@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react';
 import { Upload, FileText, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/shared/ui';
 import { playSound, SOUNDS } from '@/utils/sounds';
 
 interface PDFUploaderProps {
@@ -135,11 +135,10 @@ export function PDFUploader({ onFileSelect, disabled }: PDFUploaderProps) {
               >
                 <Upload
                   size={64}
-                  className={`mb-4 ${
-                    isDragging
-                      ? 'text-blue-600 dark:text-blue-400'
-                      : 'text-gray-400 dark:text-gray-600'
-                  }`}
+                  className={`mb-4 ${isDragging
+                    ? 'text-blue-600 dark:text-blue-400'
+                    : 'text-gray-400 dark:text-gray-600'
+                    }`}
                 />
               </motion.div>
               <h3 className="text-xl font-semibold mb-2 text-gray-700 dark:text-gray-300">

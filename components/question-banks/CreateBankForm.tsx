@@ -8,9 +8,9 @@ import { toast } from 'sonner';
 import { PDFUploader } from '@/components/shared/PDFUploader';
 import { QuestionConfig } from '@/components/shared/QuestionConfig';
 import { CustomPromptInput } from '@/components/shared/CustomPromptInput';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/src/shared/ui/button';
+import { Input } from '@/src/shared/ui/input';
+import { Label } from '@/src/shared/ui/label';
 import { playSound, SOUNDS } from '@/utils/sounds';
 
 interface QuestionBankConfig {
