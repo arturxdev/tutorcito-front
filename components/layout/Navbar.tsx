@@ -7,7 +7,7 @@ import { Menu, LayoutDashboard, Library, ExternalLink, History } from "lucide-re
 import { Logo } from "./Logo";
 import { UserMenu } from "@/components/auth/UserMenu";
 import { cn } from "@/lib/utils";
-import { Button3D } from "../ui/button-3d";
+import { Button3D } from "../../src/shared/ui/button-3d";
 import { MobileMenu } from "./MobileMenu";
 import { MobileMenuItem, MobileMenuSeparator } from "./MobileMenuItem";
 

@@ -3,17 +3,17 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/src/shared/ui/button';
+import { Input } from '@/src/shared/ui/input';
+import { Label } from '@/src/shared/ui/label';
+import { Card } from '@/src/shared/ui/card';
 import { createExam } from '@/lib/api/django-api';
 import { toast } from 'sonner';
-import type { DjangoDocument } from '@/types/django-api';
-import { Button3D } from '../ui/button-3d';
+import type { DocumentModel } from '@/src/entities';
+import { Button3D } from '../../src/shared/ui/button-3d';
 
 interface CreateExamDialogProps {
-  document: DjangoDocument;
+  document: DocumentModel;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess: () => void;

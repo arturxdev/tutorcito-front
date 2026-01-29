@@ -5,25 +5,26 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Loader2, Plus } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/src/shared/ui/button';
+import { Card } from '@/src/shared/ui/card';
 import { DocumentDetailHeader } from '@/components/documents/DocumentDetailHeader';
 import { ExamCard } from '@/components/documents/ExamCard';
 import { CreateExamDialog } from '@/components/documents/CreateExamDialog';
 import { toast } from 'sonner';
-import { getDocumentById, getExams, getQuestionsByExam } from '@/lib/api/django-api';
-import { DjangoDocument, DjangoExam, DocumentProcessingStatus } from '@/types/django-api';
+import { getExams, getQuestionsByExam } from '@/lib/api/django-api';
+import { DjangoExam, DocumentProcessingStatus } from '@/types/django-api';
 import { getDocumentProcessingStatus } from '@/utils/document-status';
 import { useQuizStore } from '@/store/quizStore';
 import { transformDjangoQuestions } from '@/lib/utils/transform-api-data';
 import { playSound, SOUNDS } from '@/utils/sounds';
+import { DocumentModel, getDocumentById } from '@/src/entities';
 
 export default function DocumentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
   const { setQuiz, resetQuiz } = useQuizStore();
-  
-  const [document, setDocument] = useState<DjangoDocument | null>(null);
+
+  const [document, setDocument] = useState<DocumentModel | null>(null);
   const [exams, setExams] = useState<DjangoExam[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -39,10 +40,10 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ id: s
     }
 
     console.log('🎯 [Document Detail] Iniciando examen...', examId);
-    
+
     // Reset any existing quiz/attempt before starting a new one
     resetQuiz();
-    
+
     setIsLoadingQuiz(true);
     playSound(SOUNDS.CLICK);
 
@@ -50,16 +51,16 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ id: s
       // Obtener preguntas del examen
       console.log('📡 [Document Detail] Obteniendo preguntas del examen', examId);
       const questions = await getQuestionsByExam(examId);
-      
+
       if (!questions || questions.length === 0) {
         throw new Error('No se encontraron preguntas para este examen');
       }
-      
+
       console.log('✅ [Document Detail] Preguntas obtenidas:', questions.length);
 
       // Obtener datos del examen de la lista cargada
       const selectedExam = exams.find(e => e.id === examId);
-      
+
       if (!selectedExam) {
         throw new Error('Examen no encontrado');
       }
@@ -67,19 +68,19 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ id: s
       // Transformar preguntas al formato interno del quiz
       console.log('🔄 [Document Detail] Transformando preguntas al formato del quiz...');
       const quiz = transformDjangoQuestions(questions, selectedExam, document);
-      
+
       console.log('📦 [Document Detail] Quiz generado:', quiz);
       console.log('📊 [Document Detail] Total de preguntas:', quiz.questions.length);
       console.log('📋 [Document Detail] Distribución:', quiz.config);
-      
+
       // Cargar quiz en el store global
       setQuiz(quiz);
-      
+
       toast.success('¡Examen listo para comenzar!', {
         description: `${quiz.questions.length} preguntas esperándote`,
       });
       playSound(SOUNDS.COMPLETE);
-      
+
       // Navigate to quiz page after short delay (allows toast to be seen)
       setTimeout(() => {
         console.log('🚀 [Document Detail] Navegando a /quiz');
@@ -87,8 +88,8 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ id: s
       }, 500);
     } catch (error) {
       console.error('❌ [Document Detail] Error al iniciar examen:', error);
-      const errorMessage = error instanceof Error 
-        ? error.message 
+      const errorMessage = error instanceof Error
+        ? error.message
         : 'Error cargando el examen. Por favor intenta de nuevo.';
       toast.error(errorMessage);
       playSound(SOUNDS.INCORRECT);
@@ -105,7 +106,7 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ id: s
       } else {
         setIsRefreshing(true);
       }
-      
+
       const [docData, examsData] = await Promise.all([
         getDocumentById(Number(id)),
         getExams(Number(id)),
@@ -134,7 +135,7 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ id: s
   // Auto-refresh when there are processing exams
   useEffect(() => {
     const hasProcessingExams = exams.some(exam => exam.status === 'process');
-    
+
     if (hasProcessingExams) {
       console.log('🔄 Auto-refresh enabled: exams are processing');
       const interval = setInterval(() => {
@@ -177,8 +178,8 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ id: s
           </Button>
         </Link>
 
-        <DocumentDetailHeader 
-          document={document} 
+        <DocumentDetailHeader
+          document={document}
           examCount={exams.length}
           processingStatus={processingStatus}
         />
@@ -214,7 +215,7 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ id: s
                   : `${exams.length} ${exams.length === 1 ? 'examen generado' : 'exámenes generados'}`}
               </p>
             </div>
-            
+
             {isRefreshing && (
               <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -241,12 +242,12 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ id: s
                   </div>
                 </div>
               )}
-              
+
               <div className="space-y-4">
                 {exams.map((exam) => (
-                  <ExamCard 
-                    key={exam.id} 
-                    exam={exam} 
+                  <ExamCard
+                    key={exam.id}
+                    exam={exam}
                     onStartExam={handleStartExam}
                     isLoadingQuiz={isLoadingQuiz}
                   />

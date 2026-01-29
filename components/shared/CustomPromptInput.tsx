@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+import { Label, Button } from '@/src/shared/ui';
 import { Lightbulb, ChevronDown, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -22,11 +21,11 @@ const PROMPT_EXAMPLES = [
   'Solo preguntas sobre capítulos 3, 4 y 5',
 ];
 
-export function CustomPromptInput({ 
-  value, 
-  onChange, 
+export function CustomPromptInput({
+  value,
+  onChange,
   disabled,
-  error 
+  error
 }: CustomPromptInputProps) {
   const [showExamples, setShowExamples] = useState(false);
 
@@ -78,9 +77,9 @@ export function CustomPromptInput({
       <div className="flex items-center justify-between">
         <p className={cn(
           "text-xs transition-colors",
-          charCount > 450 ? "text-red-600" : 
-          charCount > 400 ? "text-amber-600" : 
-          "text-gray-500"
+          charCount > 450 ? "text-red-600" :
+            charCount > 400 ? "text-amber-600" :
+              "text-gray-500"
         )}>
           {charCount}/{maxChars} caracteres
         </p>
@@ -123,8 +122,8 @@ export function CustomPromptInput({
 
       <div className="p-4 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
         <p className="text-sm text-amber-900 dark:text-amber-300">
-          <strong>💡 Consejo:</strong> Sé específico sobre qué secciones, 
-          capítulos o temas quieres incluir/excluir. La IA respetará tus 
+          <strong>💡 Consejo:</strong> Sé específico sobre qué secciones,
+          capítulos o temas quieres incluir/excluir. La IA respetará tus
           instrucciones al generar las preguntas.
         </p>
       </div>

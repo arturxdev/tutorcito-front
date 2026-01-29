@@ -9,9 +9,9 @@ import { Logo } from '@/components/layout/Logo';
 import { DifficultyBadge } from '@/components/quiz/DifficultyBadge';
 import { AnswerButton } from '@/components/quiz/AnswerButton';
 import { QuestionProgressDots } from '@/components/quiz/QuestionProgressDots';
-import { Button } from '@/components/ui/button';
-import { Button3D } from '@/components/ui/button-3d';
-import { Card3D } from '@/components/ui/card-3d';
+import { Button } from '@/src/shared/ui/button';
+import { Button3D } from '@/src/shared/ui/button-3d';
+import { Card3D } from '@/src/shared/ui/card-3d';
 import {
   Dialog,
   DialogContent,
@@ -19,7 +19,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from '@/src/shared/ui/dialog';
 import { shuffleArray } from '@/utils/random';
 import { playSound, SOUNDS } from '@/utils/sounds';
 import { toast } from 'sonner';

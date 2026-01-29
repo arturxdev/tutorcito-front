@@ -7,15 +7,15 @@ import { Home, RefreshCw, ChevronDown, ChevronUp } from "lucide-react";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import { Logo } from "@/components/layout/Logo";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { Button } from "@/src/shared/ui/button";
+import { Card } from "@/src/shared/ui/card";
+import { Badge } from "@/src/shared/ui/badge";
+import { Progress } from "@/src/shared/ui/progress";
 import { calculateScore, getMotivationalMessage } from "@/utils/scoring";
 import { playSound, SOUNDS } from "@/utils/sounds";
 import { GeneratedQuiz, QuizAttempt } from "@/types/quiz";
-import { Button3D } from "../ui/button-3d";
-import { Card3D } from "../ui/card-3d";
+import { Button3D } from "../../src/shared/ui/button-3d";
+import { Card3D } from "../../src/shared/ui/card-3d";
 
 interface QuizResultsProps {
   attempt: QuizAttempt;

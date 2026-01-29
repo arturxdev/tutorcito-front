@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Button3D } from "@/components/ui/button-3d";
-import { Card3D } from "@/components/ui/card-3d";
-import { Plus, BookOpen, FileQuestion, Upload } from "lucide-react";
+import { Button3D } from "@/src/shared/ui/button-3d";
+import { Card3D } from "@/src/shared/ui/card-3d";
+import { BookOpen, FileQuestion, Upload } from "lucide-react";
 import { CreateExamDialog } from "./CreateExamDialog";
-import type { QuestionBank } from "@/types/question-bank";
-import type { DjangoDocument } from "@/types/django-api";
+import { DocumentModel } from "@/src/entities";
 
 interface UserData {
   id: string;
@@ -22,13 +21,11 @@ interface UserData {
 
 interface DashboardContentProps {
   user: UserData;
-  banks: QuestionBank[];
-  documents: DjangoDocument[];
+  documents: DocumentModel[];
 }
 
 export default function DashboardContent({
   user,
-  banks,
   documents,
 }: DashboardContentProps) {
   const [showCreateExamDialog, setShowCreateExamDialog] = useState(false);

@@ -1,7 +1,7 @@
 import { DocumentUploader } from '@/components/documents/DocumentUploader';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/shared/ui/button';
 
 export default function NewDocumentPage() {
   return (

@@ -4,12 +4,12 @@ import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Upload, FileText, X, Loader2, CheckCircle2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { uploadDocument } from '@/lib/api/django-api';
+import { Button } from '@/src/shared/ui/button';
+import { Card } from '@/src/shared/ui/card';
 import { formatFileSize } from '@/utils/document-status';
 import { toast } from 'sonner';
-import { Button3D } from '../ui/button-3d';
+import { Button3D } from '../../src/shared/ui/button-3d';
+import { uploadDocument } from '@/src/entities/document/api';
 
 export function DocumentUploader() {
   const router = useRouter();

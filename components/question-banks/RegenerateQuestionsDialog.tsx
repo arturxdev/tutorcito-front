@@ -9,10 +9,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
+} from '@/src/shared/ui/dialog';
+import { Button } from '@/src/shared/ui/button';
+import { Label } from '@/src/shared/ui/label';
+import { Badge } from '@/src/shared/ui/badge';
 import { CustomPromptInput } from '@/components/shared/CustomPromptInput';
 import { toast } from 'sonner';
 
@@ -149,7 +149,7 @@ export function RegenerateQuestionsDialog({
                   Mantener distribución de dificultad
                 </Label>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  {maintainDifficulties 
+                  {maintainDifficulties
                     ? 'Las nuevas preguntas tendrán la misma distribución de dificultad'
                     : 'La IA decidirá la dificultad de las nuevas preguntas automáticamente'
                   }

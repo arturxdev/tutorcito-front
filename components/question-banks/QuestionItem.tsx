@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { DifficultyBadge } from '@/components/quiz/DifficultyBadge';
-import { Card } from '@/components/ui/card';
+import { Card } from '@/src/shared/ui/card';
 
 interface Answer {
   id: string;
@@ -43,9 +43,8 @@ export function QuestionItem({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
     >
-      <Card className={`p-6 hover:shadow-lg transition-all duration-300 ${
-        isSelected ? 'border-2 border-purple-500 bg-purple-50 dark:bg-purple-900/10' : 'border-2 border-transparent'
-      }`}>
+      <Card className={`p-6 hover:shadow-lg transition-all duration-300 ${isSelected ? 'border-2 border-purple-500 bg-purple-50 dark:bg-purple-900/10' : 'border-2 border-transparent'
+        }`}>
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3 flex-1">
@@ -76,22 +75,19 @@ export function QuestionItem({
           {sortedAnswers.map((answer, answerIndex) => (
             <div
               key={answer.id}
-              className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${
-                answer.isCorrect
+              className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${answer.isCorrect
                   ? 'bg-green-50 dark:bg-green-900/20 border-2 border-green-300 dark:border-green-700'
                   : 'bg-gray-50 dark:bg-gray-800 border-2 border-transparent'
-              }`}
+                }`}
             >
-              <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                answer.isCorrect
+              <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${answer.isCorrect
                   ? 'bg-green-600 text-white'
                   : 'bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-              }`}>
+                }`}>
                 {ANSWER_LETTERS[answerIndex]}
               </div>
-              <p className={`flex-1 text-gray-700 dark:text-gray-300 ${
-                answer.isCorrect ? 'font-semibold' : ''
-              }`}>
+              <p className={`flex-1 text-gray-700 dark:text-gray-300 ${answer.isCorrect ? 'font-semibold' : ''
+                }`}>
                 {answer.text}
               </p>
               {answer.isCorrect && (

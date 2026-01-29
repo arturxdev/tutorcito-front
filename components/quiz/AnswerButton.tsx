@@ -2,7 +2,7 @@
 
 import { Check, X } from 'lucide-react';
 import { playSound, SOUNDS } from '@/utils/sounds';
-import { Button3D } from '@/components/ui/button-3d';
+import { Button3D } from '@/src/shared/ui/button-3d';
 
 interface AnswerButtonProps {
   letter: 'A' | 'B' | 'C' | 'D';

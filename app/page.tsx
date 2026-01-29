@@ -17,10 +17,10 @@ import {
   X,
   RefreshCw,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Button } from "@/src/shared/ui/button";
+import { Card } from "@/src/shared/ui/card";
 import { playSound, SOUNDS } from "@/utils/sounds";
-import { Button3D } from "@/components/ui/button-3d";
+import { Button3D } from "@/src/shared/ui/button-3d";
 import { LandingNavbar } from "@/components/layout/LandingNavbar";
 
 // Demo quiz questions - always the same 3 questions about world capitals
@@ -291,11 +291,11 @@ export default function LandingPage() {
                               key={option.letter}
                               variant={
                                 variant as
-                                  | "red"
-                                  | "blue"
-                                  | "yellow"
-                                  | "green"
-                                  | "white"
+                                | "red"
+                                | "blue"
+                                | "yellow"
+                                | "green"
+                                | "white"
                               }
                               onClick={() =>
                                 handleAnswerClick(option.letter, option.correct)
@@ -329,10 +329,9 @@ export default function LandingPage() {
                             <div
                               key={index}
                               className={`
-                                ${
-                                  index === currentQuestionIndex
-                                    ? "w-8 bg-[#590df2]"
-                                    : "w-2 bg-gray-300"
+                                ${index === currentQuestionIndex
+                                  ? "w-8 bg-[#590df2]"
+                                  : "w-2 bg-gray-300"
                                 }
                                 h-2 rounded-full transition-all duration-300
                               `}

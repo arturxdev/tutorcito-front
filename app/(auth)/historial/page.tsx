@@ -6,9 +6,9 @@ import { motion } from "framer-motion";
 import { Calendar, CheckCircle2, XCircle, Clock, ArrowRight } from "lucide-react";
 import { StorageManager } from "@/utils/storage";
 import { QuizAttempt, GeneratedQuiz } from "@/types/quiz";
-import { Card3D } from "@/components/ui/card-3d";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card3D } from "@/src/shared/ui/card-3d";
+import { Button } from "@/src/shared/ui/button";
+import { Badge } from "@/src/shared/ui/badge";
 import { calculateScore } from "@/utils/scoring";
 
 interface HistoryItem {
@@ -23,7 +23,7 @@ export default function HistoryPage() {
   useEffect(() => {
     const attempts = StorageManager.getAllAttempts();
     // Sort by date descending (newest first)
-    attempts.sort((a, b) => 
+    attempts.sort((a, b) =>
       new Date(b.completedAt || b.startedAt).getTime() - new Date(a.completedAt || a.startedAt).getTime()
     );
 
@@ -95,15 +95,15 @@ export default function HistoryPage() {
                 transition={{ delay: index * 0.1 }}
               >
                 <Link href={`/historial/${attempt.id}`}>
-                  <Card3D 
-                    variant="interactive" 
+                  <Card3D
+                    variant="interactive"
                     className="h-full flex flex-col hover:border-purple-200 dark:hover:border-purple-800 group"
                   >
                     <div className="flex justify-between items-start mb-4">
-                      <Badge 
-                        variant="outline" 
-                        className={isPassing 
-                          ? "bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800" 
+                      <Badge
+                        variant="outline"
+                        className={isPassing
+                          ? "bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800"
                           : "bg-red-50 text-red-700 border-red-200 dark:bg-red-900/20 dark:text-red-300 dark:border-red-800"
                         }
                       >
